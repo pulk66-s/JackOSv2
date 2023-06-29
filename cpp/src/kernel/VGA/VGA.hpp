@@ -4,18 +4,42 @@
     #include <stdint.h>
     #include <stddef.h>
 
+/**
+ * @brief      VGA constants
+ * The VGA is a 80x25 character display starting at 0xB8000.
+ * Each character is 2 bytes long.
+ * - The first byte is the ASCII character.
+ * - The second byte is the color.
+ * So it's a 80x25x2 bytes buffer.
+*/
     #define VGA_WIDTH   80
     #define VGA_HEIGHT  25
     #define VGA_BUFFER  0xB8000
 
-typedef uint8_t VGA_entry_color;
-typedef uint16_t VGA_entry;
-typedef VGA_entry *VGA_buffer;
+/**
+ * @brief      VGA types
+ * Types to make the code more readable.
+*/
+typedef uint8_t     VGA_entry_color;
+typedef uint16_t    VGA_entry;
+typedef VGA_entry*  VGA_buffer;
 
+/**
+ * @brief      VGA class
+ * It's a class that handles the VGA buffer.
+ * It works like a terminal, with colors and different printing functions.
+*/
 class VGA
 {
 
 public:
+    /**
+     * @brief      VGA colors
+     * List of all the colors available for the VGA.
+     * The first 8 colors are the normal ones, the last 8 are the bright ones.
+     * See the official VGA documentation for more information.
+     * https://en.wikipedia.org/wiki/VGA-compatible_text_mode#Color_attributes
+    */
     enum color
     {
         BLACK = 0,
@@ -38,6 +62,10 @@ public:
 
     VGA(void);
 
+    /**
+     * @brief      Put a character on the VGA buffer
+     * It print a char on the next available position.
+    */
     void putc(unsigned char c);
 
 private:
@@ -46,9 +74,8 @@ private:
     VGA_entry_color color;
     VGA_buffer buffer;
 
-    void init(void);
-    VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
-    VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
+    inline VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
+    inline VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
 };
 
 #endif
