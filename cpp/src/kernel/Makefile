@@ -8,7 +8,13 @@ include ../../config.mk
 
 ## Project sources
 
-CPP_SRC		= kernel.cpp
+###############################
+### NON UPDATABLE VARIABLES ###
+###############################
+
+CPP_SRC		= 	Kernel.cpp \
+				main.cpp \
+				VGA/VGA.cpp \
 
 ## Project objects
 CPP_OBJ		= $(CPP_SRC:.cpp=.o)

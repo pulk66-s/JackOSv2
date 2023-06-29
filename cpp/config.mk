@@ -38,7 +38,8 @@ export ASM_FLAGS 		:=
 
 # C++ Cross Compiler
 export CPP_CC 			:= ${BIN_DIR}/i686-elf-g++
-export CPP_FLAGS		:= -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+export CPP_INCLUDES		:= -I ${PROJECT_FOLDER}/cpp/src/libs/ -I ${PROJECT_FOLDER}/cpp/src/
+export CPP_FLAGS		:= -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti ${CPP_INCLUDES}
 export CPP_LINKER_FLAGS	:= -T $(LINKER_FILE) -o ${BIN_NAME} -ffreestanding -O2 -nostdlib -lgcc
 
 ## Run executable
