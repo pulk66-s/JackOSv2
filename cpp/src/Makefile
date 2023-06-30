@@ -15,6 +15,9 @@ BOOT_DIR		:= ./boot/
 ## Kernel code directory
 KERNEL_DIR 		:= ./kernel/
 
+## Libs directory
+LIBS_DIR		:= ./libs/
+
 ## GRUB variables
 GRUB_FILE		:= grub2-file
 GRUB_FILE_FLAGS	:= --is-x86-multiboot
@@ -52,12 +55,14 @@ build_submakefiles:
 	@echo "${COLOR_YELLOW}Building ${PROJECT_NAME} submakefiles...${NO_COLOR}"
 	@$(MAKE) -C $(BOOT_DIR) build
 	@$(MAKE) -C $(KERNEL_DIR) build
+	@$(MAKE) -C $(LIBS_DIR) build
 
 ## Clean the whole project except the executable
 clean:
 	@echo "${COLOR_YELLOW}Cleaning ${PROJECT_NAME} sources...${NO_COLOR}"
 	@$(MAKE) -C $(BOOT_DIR) clean
 	@$(MAKE) -C $(KERNEL_DIR) clean
+	@$(MAKE) -C $(LIBS_DIR) clean
 
 ## Clean the whole project
 fclean: clean

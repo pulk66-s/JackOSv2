@@ -59,3 +59,21 @@ void VGA::putc(unsigned char c)
 	this->buffer[index] = this->vgaEntry(c, this->color);
 	this->col++;
 }
+
+/**
+ * @brief	  Put a string on the VGA buffer
+ * It print a string on the next available position.
+ * @param[in]  str   The string
+*/
+void VGA::puts(const char *str)
+{
+	for (size_t i = 0; str[i]; i++) {
+		this->putc(str[i]);
+	}
+}
+
+/**
+ * @brief      Put a string on the VGA buffer
+ * It print a string on the next available position.
+ * @param[in]  str   The string
+*/

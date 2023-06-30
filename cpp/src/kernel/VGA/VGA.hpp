@@ -4,6 +4,8 @@
     #include <stdint.h>
     #include <stddef.h>
 
+    #include "Types/String.hpp"
+
 /**
  * @brief      VGA constants
  * The VGA is a 80x25 character display starting at 0xB8000.
@@ -67,6 +69,12 @@ public:
      * It print a char on the next available position.
     */
     void putc(unsigned char c);
+
+    /**
+     * @brief      Put a string on the VGA buffer
+     * It print a string on the next available position.
+    */
+    void puts(const char *str);
 
 private:
     size_t row;
