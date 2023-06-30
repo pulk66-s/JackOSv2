@@ -1,13 +1,13 @@
 #include <stdbool.h>
 #include "kernel/Kernel.hpp"
-#include "Types/String.hpp"
+#include "Types.hpp"
 
 void Kernel::run()
 {
-	this->vga.putc('H');
-	this->vga.putc('e');
+	this->vga.puts("Hello World");
 
-	this->vga.puts("LOOP");
+	HeapString str("Stored in heap!");
 
-	this->vga.putc('p');
+	this->vga.puts("PASSED");
+	this->vga.puts(str.c_str());
 }

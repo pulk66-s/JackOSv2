@@ -7,7 +7,8 @@
 include ../../../config.mk
 
 ## Types sources
-CPP_SRC		:= String.cpp
+CPP_SRC		:= 	AString.cpp \
+				HeapString.cpp \
 
 ## Types objects
 CPP_OBJ		:= $(CPP_SRC:.cpp=.o)
@@ -23,6 +24,7 @@ build: ${CPP_OBJ}
 ## Clean the Types library
 clean:
 	@echo "${COLOR_YELLOW}Cleaning Types library...${NO_COLOR}"
+	$(RM) ${CPP_OBJ}
 
 ## Compile all the sources
 %.o: %.cpp

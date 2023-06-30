@@ -77,3 +77,7 @@ void VGA::puts(const char *str)
  * It print a string on the next available position.
  * @param[in]  str   The string
 */
+// void VGA::puts(AString str)
+// {
+// 	this->puts("YEET");
+// }

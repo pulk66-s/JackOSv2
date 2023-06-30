@@ -15,6 +15,8 @@ include ../../config.mk
 CPP_SRC		= 	Kernel.cpp \
 				main.cpp \
 				VGA/VGA.cpp \
+				Heap/Heap.cpp \
+				Heap/HeapObject.cpp \
 
 ## Project objects
 CPP_OBJ		= $(CPP_SRC:.cpp=.o)
