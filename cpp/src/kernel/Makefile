@@ -21,6 +21,7 @@ CPP_SRC		= 	Kernel.cpp \
 				IDT/interrupts.cpp \
 				IDT/Handler.cpp \
 				PIC/PIC.cpp \
+				GDT/GDT.cpp
 
 ## Project objects
 CPP_OBJ		= $(CPP_SRC:.cpp=.o)

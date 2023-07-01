@@ -6,7 +6,7 @@ VGA::VGA(void)
 	this->col = 0;
 	this->buffer = (VGA_buffer)VGA_BUFFER;
 	this->color = this->colorEntry(
-		VGA::color::LIGHT_GREY,
+		VGA::color::WHITE,
 		VGA::color::BLACK
 	);
 }
