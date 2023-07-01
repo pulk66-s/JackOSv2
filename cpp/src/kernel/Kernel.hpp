@@ -2,6 +2,7 @@
     #define __JACKOS_KERNEL_KERNEL_HPP__
 
     #include "VGA/VGA.hpp"
+    #include "IDT/IDT.hpp"
 
 /**
  * @brief      The kernel class
@@ -14,7 +15,8 @@ class Kernel {
 
 private:
     // To display basic information on the screen
-    VGA vga; 
+    VGA vga;
+    IDT idt;
 
 public:
     void run();

@@ -8,6 +8,8 @@ void Kernel::run()
 
 	HeapString str("Stored in heap!");
 
+	this->idt.init();
+	this->idt.enableEntry(33);
 	this->vga.puts("PASSED");
 	this->vga.puts(str.c_str());
 }

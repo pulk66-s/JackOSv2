@@ -17,6 +17,10 @@ CPP_SRC		= 	Kernel.cpp \
 				VGA/VGA.cpp \
 				Heap/Heap.cpp \
 				Heap/HeapObject.cpp \
+				IDT/IDT.cpp \
+				IDT/interrupts.cpp \
+				IDT/Handler.cpp \
+				PIC/PIC.cpp \
 
 ## Project objects
 CPP_OBJ		= $(CPP_SRC:.cpp=.o)
