@@ -52,4 +52,5 @@ export QEMU_FLAGS		:= -accel tcg,thread=single	\
 	-serial stdio                                  	\
 	-smp 1                                         	\
 	-usb                                           	\
-	-vga std
+	-vga std										\
+	-d int

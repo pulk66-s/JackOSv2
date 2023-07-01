@@ -23,12 +23,7 @@ void GDT::init()
     this->setEntry(2, (struct base){0, 0, 0}, 0xffffffff, 0x92, 0xcf);    // data segment
     this->setEntry(3, (struct base){0, 0, 0}, 0xffffffff, 0xfa, 0xcf);    // user code segment
     this->setEntry(4, (struct base){0, 0, 0}, 0xffffffff, 0xf2, 0xcf);    // user data segment
-    this->load();                                                         // load the GDT (global descriptor table
-}
-
-void GDT::load()
-{
-    asm volatile("lgdtl %0" : : "m" (this->gdtr));
+    load_gdt((uint32_t)&this->gdtr);
 }
 
 void GDT::setEntry(uint8_t index, struct base base, uint32_t limit, uint8_t access, uint8_t granularity)

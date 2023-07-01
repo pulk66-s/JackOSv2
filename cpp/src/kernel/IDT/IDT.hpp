@@ -20,7 +20,7 @@ private:
     Pic pic;
 
     void fillEntries();
-    void createIdtEntry(uint8_t index, void (*call)(), uint16_t segment, uint8_t flags);
+    void createIdtEntry(uint8_t index, void *call, uint16_t segment, uint8_t flags);
 };
 
 #endif

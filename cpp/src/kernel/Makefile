@@ -26,8 +26,12 @@ CPP_SRC		= 	Kernel.cpp \
 				GDT/GDT.cpp \
 				keyboard/Keyboard.cpp \
 
+ASM_SRC		=	GDT/load_gdt.s \
+				IDT/interrupts.s \
+
 ## Project objects
-CPP_OBJ		= $(CPP_SRC:.cpp=.o)
+CPP_OBJ		= $(CPP_SRC:.cpp=.cpp.o)
+ASM_OBJ		= $(ASM_SRC:.s=.s.o)
 
 ## Error if no target is selected
 all:
@@ -41,7 +45,7 @@ __build_message:
 build: __build_message build_cpp
 
 ## Build all .cpp files into .o files
-build_cpp: $(CPP_OBJ)
+build_cpp: $(CPP_OBJ) $(ASM_OBJ)
 
 ## Clean all .o files
 clean:
@@ -49,6 +53,11 @@ clean:
 	@$(RM) $(CPP_OBJ)
 
 ## Build each .o file from its .cpp file
-%.o: %.cpp
+%.cpp.o: %.cpp
 	@echo "${COLOR_GREEN}Building $<...${NO_COLOR}"
 	$(CPP_CC) $(CPP_FLAGS) -c $< -o $@
+
+## Build each .o file from its .s file
+%.s.o: %.s
+	@echo "${COLOR_GREEN}Building $<...${NO_COLOR}"
+	$(ASM_CC) $(ASM_FLAGS) $< -o $@
