@@ -21,7 +21,6 @@ void IDT::init()
     this->fillEntries();
     this->enableAllEntries();
     this->pic.remap();
-    this->disableEntry(0x80);
     this->lidt();
     this->sti();
 }
@@ -31,17 +30,17 @@ void IDT::enableEntry(uint8_t index)
     this->idt[index].flags |= IDT_FLAG_PRESENT;
 }
 
-inline void IDT::sti()
+void IDT::sti()
 {
     asm volatile("sti");
 }
 
-inline void IDT::disableEntry(uint8_t index)
+void IDT::disableEntry(uint8_t index)
 {
     this->idt[index].flags &= ~IDT_FLAG_PRESENT;
 }
 
-inline void IDT::createIdtEntry(uint8_t index, void (*call)(), uint16_t segment, uint8_t flags)
+void IDT::createIdtEntry(uint8_t index, void (*call)(), uint16_t segment, uint8_t flags)
 {
     this->idt[index] = (struct idt_entry) {
         .call_low = (uint16_t)(((uint32_t) call) & 0xffff),
@@ -52,7 +51,7 @@ inline void IDT::createIdtEntry(uint8_t index, void (*call)(), uint16_t segment,
     };
 }
 
-inline void IDT::lidt()
+void IDT::lidt()
 {
     asm volatile("lidt (%0)" : : "r" (&this->idt_descriptor));
 }

@@ -8,9 +8,13 @@ void Kernel::run()
 
 	HeapString str("Stored in heap!");
 
+	this->vga.puts("\nGDT Initialization...");
 	this->gdt.init();
+	this->vga.puts("\nIDT Initialization...");
 	this->idt.init();
-	this->idt.enableEntry(33);
-	this->vga.puts("PASSED");
+	this->vga.puts("\nKeyboard Initialization...");
+	this->keyboard.init(&this->idt);
+
+	this->vga.puts("\nEverything PASSED\n");
 	this->vga.puts(str.c_str());
 }

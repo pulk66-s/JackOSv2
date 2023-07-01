@@ -14,7 +14,7 @@ void GDT::init()
         };
     }
     this->gdtr = (struct gdt_descriptor) {
-        .limit = sizeof(struct gdt_entry) * NO_GDT_DESCRIPTORS - 1,
+        .limit = sizeof(this->gdt) - 1,
         .gdt = (struct gdt_entry *)&this->gdt
     };
 
@@ -26,16 +26,16 @@ void GDT::init()
     this->load();                                                         // load the GDT (global descriptor table
 }
 
-inline void GDT::load()
+void GDT::load()
 {
-    asm volatile("lgdt (%0)" : : "r" (&this->gdtr));
+    asm volatile("lgdtl %0" : : "m" (this->gdtr));
 }
 
 void GDT::setEntry(uint8_t index, struct base base, uint32_t limit, uint8_t access, uint8_t granularity)
 {
-    this->gdt[index] = {
-        .segment_limit = limit & 0xFFFF,
-        .base_low = base.low & 0xFFFF,
+    this->gdt[index] = (struct gdt_entry) {
+        .segment_limit = (uint16_t)(limit & 0xFFFF),
+        .base_low = (uint16_t)(base.low & 0xFFFF),
         .base_middle = base.middle,
         .access = access,
         .granularity = granularity,

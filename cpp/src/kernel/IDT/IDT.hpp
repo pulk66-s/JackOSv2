@@ -9,10 +9,10 @@ class IDT
 public:
     void init();
     void enableAllEntries();
-    inline void disableEntry(uint8_t index);
+    void disableEntry(uint8_t index);
     void enableEntry(uint8_t index);
-    inline void sti();
-    inline void lidt();
+    void sti();
+    void lidt();
 
 private:
     struct idt_entry idt[IDT_SIZE];
@@ -20,7 +20,7 @@ private:
     Pic pic;
 
     void fillEntries();
-    inline void createIdtEntry(uint8_t index, void (*call)(), uint16_t segment, uint8_t flags);
+    void createIdtEntry(uint8_t index, void (*call)(), uint16_t segment, uint8_t flags);
 };
 
 #endif

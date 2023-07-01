@@ -4,6 +4,7 @@
     #include "kernel/VGA/VGA.hpp"
     #include "kernel/IDT/IDT.hpp"
     #include "kernel/GDT/GDT.hpp"
+    #include "kernel/keyboard/Keyboard.hpp"
 
 /**
  * @brief      The kernel class
@@ -19,6 +20,7 @@ private:
     VGA vga;
     IDT idt;
     GDT gdt;
+    Keyboard keyboard;
 
 public:
     void run();

@@ -6,7 +6,9 @@
     /**
      * @brief The size of the IDT in entry (idt_entry)
     */
-        #define IDT_SIZE 256
+        #define IRQ_SIZE 16
+        #define ISR_SIZE 32
+        #define IDT_SIZE (IRQ_SIZE + ISR_SIZE)
 
     /**
      * @brief the GDT segment used by the IDT It's the kernel code segment
@@ -68,6 +70,8 @@ enum IDT_FLAGS {
     IDT_FLAG_RING0              = (0 << 5),
     IDT_FLAG_PRESENT            = 0x80
 };
+
+typedef void (*handler)(struct regs);
 
 /**
  * @brief This is a typedef to a function pointer.

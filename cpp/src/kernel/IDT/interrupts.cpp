@@ -1,8 +1,16 @@
 #include "kernel/IDT/interrupts.hpp"
+#include "kernel/IDT/Handler/ISRHandler.hpp"
+#include "kernel/IDT/Handler/IRQHandler.hpp"
 #include "kernel/VGA/VGA.hpp"
 
-#define ISR(nb) void isr##nb(void) {}
-#define IRQ(nb) void irq##nb(void) {}
+#define ISR(nb) void isr##nb() { \
+    VGA vga; \
+    vga.puts("ISR" #nb); \
+}
+#define IRQ(nb) void irq##nb() { \
+    VGA vga; \
+    vga.puts("IRQ" #nb); \
+}
 
 ISR(0);
 ISR(1);
@@ -39,12 +47,12 @@ ISR(31);
 
 IRQ(0);
 IRQ(1);
-// IRQ(2);
-void irq2() {
-    VGA vga;
+// void irq1() {
+//     VGA vga;
 
-    vga.putc('I');
-}
+//     vga.puts("IRQ1");
+// }
+IRQ(2);
 IRQ(3);
 IRQ(4);
 IRQ(5);

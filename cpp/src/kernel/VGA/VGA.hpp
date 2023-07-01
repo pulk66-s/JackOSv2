@@ -88,8 +88,8 @@ private:
     VGA_entry_color color;
     VGA_buffer buffer;
 
-    inline VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
-    inline VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
+    VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
+    VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
 };
 
 #endif

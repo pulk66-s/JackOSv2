@@ -19,9 +19,12 @@ CPP_SRC		= 	Kernel.cpp \
 				Heap/HeapObject.cpp \
 				IDT/IDT.cpp \
 				IDT/interrupts.cpp \
-				IDT/Handler.cpp \
+				IDT/Handler/ISRHandler.cpp \
+				IDT/Handler/IRQHandler.cpp \
+				IDT/Handler/handlers.cpp \
 				PIC/PIC.cpp \
-				GDT/GDT.cpp
+				GDT/GDT.cpp \
+				keyboard/Keyboard.cpp \
 
 ## Project objects
 CPP_OBJ		= $(CPP_SRC:.cpp=.o)

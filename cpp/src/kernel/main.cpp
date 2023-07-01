@@ -22,5 +22,6 @@ extern "C"
 		Kernel kernel;
 
 		kernel.run();
+		for (;;);
 	}
 }
