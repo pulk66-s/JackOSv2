@@ -1,27 +1,36 @@
-#ifndef __CPPLIB_ARRAY_ARRAY_HPP__
-    #define __CPPLIB_ARRAY_ARRAY_HPP__
+#ifndef __JACKOS_LIBS_TYPES_ARRAY_HEAPARRAY_HPP__
+    #define __JACKOS_LIBS_TYPES_ARRAY_HEAPARRAY_HPP__
 
     #include "Types/Array/AArray.hpp"
     #include <kernel/Heap.hpp>
+    #include <Types/TypesNamespace.hpp>
 
-template <typename T>
-class Array : public AArray<T>, public HeapObject {
-public:
-    Array(size_t size) {
-        this->init(size);
-    }
+namespace JO::Libs::Types::Array
+{
 
-    ~Array() {
-        this->destroy();
-    }
+    template <typename T>
+    class HeapArray : public AArray<T>, public HeapObject {
+    public:
+        HeapArray(size_t size)
+        {
+            this->init(size);
+        }
 
-    void *alloc(size_t size) const {
-        return new T[size];
-    }
+        ~HeapArray()
+        {
+            this->destroy();
+        }
 
-    void dealloc(void *p) const {
-        delete[] (T*)p;
-    }
-};
+        void *alloc(size_t size) const
+        {
+            return new T[size];
+        }
+
+        void dealloc(void *p) const
+        {
+            delete[] (T *)p;
+        }
+    };
+}
 
 #endif

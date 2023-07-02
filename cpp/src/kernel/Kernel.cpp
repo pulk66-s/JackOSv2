@@ -8,7 +8,7 @@ void Kernel::run()
 {
 	this->vga.puts("Hello World");
 
-	HeapString str("Stored in heap!");
+	JO::Libs::Types::String::HeapString str("Stored in heap!");
 
 	this->vga.puts("\nGDT Initialization...");
 	this->gdt.init();

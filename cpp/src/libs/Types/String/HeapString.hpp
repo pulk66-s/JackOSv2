@@ -3,18 +3,22 @@
 
     #include <stddef.h>
     #include <kernel/Heap.hpp>
+    #include <Types/TypesNamespace.hpp>
 
     #include "Types/String/AString.hpp"
 
-class HeapString : public AString, public HeapObject
+namespace JO::Libs::Types::String
 {
-protected:
-    void *alloc(size_t size) const override;
-    void dealloc(void *ptr) const override;
+    class HeapString : public AString, public HeapObject
+    {
+    protected:
+        void *alloc(size_t size) const override;
+        void dealloc(void *ptr) const override;
 
-public:
-    HeapString(const char *str);
-    HeapString(int value);
-};
+    public:
+        HeapString(const char *str);
+        HeapString(int value);
+    };
+}
 
 #endif
