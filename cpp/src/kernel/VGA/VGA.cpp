@@ -72,12 +72,35 @@ void VGA::puts(const char *str)
 	}
 }
 
-/**
- * @brief      Put a string on the VGA buffer
- * It print a string on the next available position.
- * @param[in]  str   The string
-*/
-// void VGA::puts(AString str)
-// {
-// 	this->puts("YEET");
-// }
+void VGA::clear()
+{
+	for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+		this->buffer[i] = this->vgaEntry(' ', this->color);
+	}
+	this->row = 0;
+	this->col = 0;
+}
+
+void VGA::puti(int i)
+{
+	if (i < 0) {
+		this->putc('-');
+		i = -i;
+	}
+	if (i == 0) {
+		this->putc('0');
+		return;
+	}
+	int tmp = i;
+	int len = 0;
+	while (tmp > 0) {
+		tmp /= 10;
+		len++;
+	}
+	char str[len];
+	for (int j = len - 1; j >= 0; j--) {
+		str[j] = i % 10 + '0';
+		i /= 10;
+	}
+	this->puts(str);
+}

@@ -19,9 +19,9 @@ extern "C"
 {
 	void kernel_main(void)
 	{
-		Kernel kernel;
+		Kernel *kernel = Kernel::getKernel();
 
-		kernel.run();
+		kernel->run();
 		for (;;);
 	}
 }

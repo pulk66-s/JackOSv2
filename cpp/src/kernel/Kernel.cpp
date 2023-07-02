@@ -1,6 +1,8 @@
 #include <stdbool.h>
-#include "kernel/Kernel.hpp"
+#include <kernel/Kernel.hpp>
 #include "Types.hpp"
+
+static Kernel *kernel = new Kernel();
 
 void Kernel::run()
 {
@@ -17,4 +19,19 @@ void Kernel::run()
 
 	this->vga.puts("\nEverything PASSED\n");
 	this->vga.puts(str.c_str());
+}
+
+Kernel *Kernel::getKernel()
+{
+	return kernel;
+}
+
+struct Kernel::Context Kernel::getContext()
+{
+	return (struct Kernel::Context) {
+		.vga = &this->vga,
+		.idt = &this->idt,
+		.gdt = &this->gdt,
+		.keyboard = &this->keyboard
+	};
 }

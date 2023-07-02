@@ -3,8 +3,8 @@
 
     #include <stddef.h>
 
-class HeapObject {
-
+class HeapObject
+{
 public:
     void *operator new(size_t size);
     void *operator new[](size_t size);

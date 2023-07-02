@@ -8,7 +8,7 @@ include ../../config.mk
 
 ## Error if no target is specified
 
-LIBS	= ./Types/
+LIBS	= ./Types/String
 
 all:
 	@echo "${COLOR_RED}Error: No target specified on libs Makefile${NO_COLOR}"

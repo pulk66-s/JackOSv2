@@ -4,7 +4,7 @@
     #include <stdint.h>
     #include <stddef.h>
 
-    #include "Types/HeapString.hpp"
+    #include <Types/String.hpp>
 
 /**
  * @brief      VGA constants
@@ -76,11 +76,9 @@ public:
     */
     void puts(const char *str);
 
-    /**
-     * @brief      Put a AString on the VGA buffer
-     * It print a string on the next available position.
-    */
-    // void puts(AString str);
+    void clear();
+
+    void puti(int i);
 
 private:
     size_t row;

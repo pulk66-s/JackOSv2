@@ -6,6 +6,7 @@
 class Keyboard {
 public:
     void init(IDT *idt);
+    void handleInput(uint8_t scancode);
 };
 
 #endif

@@ -1,10 +1,10 @@
 #ifndef __JACKOS_KERNEL_KERNEL_HPP__
     #define __JACKOS_KERNEL_KERNEL_HPP__
 
-    #include "kernel/VGA/VGA.hpp"
-    #include "kernel/IDT/IDT.hpp"
-    #include "kernel/GDT/GDT.hpp"
-    #include "kernel/keyboard/Keyboard.hpp"
+    #include <kernel/VGA.hpp>
+    #include <kernel/IDT.hpp>
+    #include <kernel/GDT.hpp>
+    #include <kernel/Keyboard.hpp>
 
 /**
  * @brief      The kernel class
@@ -15,8 +15,14 @@
 */
 class Kernel {
 
+    struct Context {
+        VGA *vga;
+        IDT *idt;
+        GDT *gdt;
+        Keyboard *keyboard;
+    };
+
 private:
-    // To display basic information on the screen
     VGA vga;
     IDT idt;
     GDT gdt;
@@ -24,6 +30,8 @@ private:
 
 public:
     void run();
+    Context getContext();
+    static Kernel *getKernel();
 };
 
 #endif

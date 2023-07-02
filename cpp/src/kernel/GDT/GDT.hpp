@@ -8,7 +8,6 @@ extern "C" void load_gdt(uint32_t gdt_ptr);
 class GDT {
 public:
     void init();
-    // void load();
     void setEntry(uint8_t index, struct base base, uint32_t limit, uint8_t access, uint8_t granularity);
 
 private:

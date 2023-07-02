@@ -4,7 +4,7 @@
 ##
 
 # Include the configuration file
-include ../../../config.mk
+include ../../../../config.mk
 
 ## Types sources
 CPP_SRC		:= 	AString.cpp \
