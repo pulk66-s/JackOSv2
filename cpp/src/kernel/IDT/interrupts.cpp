@@ -5,24 +5,27 @@
 #include <kernel/GDT.hpp>
 #include <kernel/Kernel.hpp>
 
-extern "C" {
-    void isr_handler(struct registers *regs) {
-        VGA vga;
-        vga.puts("ISR: ");
-    }
+namespace JO::Kernel::IDT {
 
-    void irq_handler(struct registers *regs) {
-        Pic pic;
-
-        if (regs->interrupt >= 40) {
-            pic.outb(0xA0, 0x20);
+    extern "C" {
+        void isr_handler(struct registers *regs) {
+            VGA::VGA vga;
+            vga.puts("ISR: ");
         }
-        pic.outb(0x20, 0x20);
-        if (regs->interrupt == 33) {
-            uint8_t scancode = pic.inb(0x60);
-            Keyboard *keyboard = Kernel::getKernel()->getContext().keyboard;
 
-            keyboard->handleInput(scancode);
+        void irq_handler(struct registers *regs) {
+            PIC::Pic pic;
+
+            if (regs->interrupt >= 40) {
+                pic.outb(0xA0, 0x20);
+            }
+            pic.outb(0x20, 0x20);
+            if (regs->interrupt == 33) {
+                uint8_t scancode = pic.inb(0x60);
+                PS2::Keyboard *keyboard = JO::Kernel::Kernel::getKernel()->getContext().keyboard;
+
+                keyboard->handleInput(scancode);
+            }
         }
     }
 }

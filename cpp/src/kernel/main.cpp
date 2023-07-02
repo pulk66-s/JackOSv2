@@ -19,7 +19,7 @@ extern "C"
 {
 	void kernel_main(void)
 	{
-		Kernel *kernel = Kernel::getKernel();
+		JO::Kernel::Kernel *kernel = JO::Kernel::Kernel::getKernel();
 
 		kernel->run();
 		for (;;);

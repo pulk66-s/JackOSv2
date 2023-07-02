@@ -3,8 +3,10 @@
 
     #include "kernel/IDT/types.hpp"
 
-class IHandler {
-    virtual void handle(struct registers *regs) = 0;
-};
+namespace JO::Kernel::IDT::Handler {
+    class IHandler {
+        virtual void handle(struct registers *regs) = 0;
+    };
+}
 
 #endif
