@@ -17,7 +17,7 @@ namespace JO::Libs::Types::String {
         return new char[size];
     }
 
-    void HeapString::dealloc(void *ptr) const
+    void HeapString::free(void *ptr) const
     {
         delete[] (char *)ptr;
     }

@@ -88,4 +88,9 @@ namespace JO::Libs::Types::String {
             j--;
         }
     }
+
+    void AString::destroy()
+    {
+        this->free(this->str);
+    }
 }
