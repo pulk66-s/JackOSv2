@@ -26,68 +26,70 @@ typedef uint8_t     VGA_entry_color;
 typedef uint16_t    VGA_entry;
 typedef VGA_entry*  VGA_buffer;
 
-/**
- * @brief      VGA class
- * It's a class that handles the VGA buffer.
- * It works like a terminal, with colors and different printing functions.
-*/
-class VGA
-{
-
-public:
+namespace JO::Kernel::VGA {
     /**
-     * @brief      VGA colors
-     * List of all the colors available for the VGA.
-     * The first 8 colors are the normal ones, the last 8 are the bright ones.
-     * See the official VGA documentation for more information.
-     * https://en.wikipedia.org/wiki/VGA-compatible_text_mode#Color_attributes
+     * @brief      VGA class
+     * It's a class that handles the VGA buffer.
+     * It works like a terminal, with colors and different printing functions.
     */
-    enum color
+    class VGA
     {
-        BLACK = 0,
-        BLUE = 1,
-        GREEN = 2,
-        CYAN = 3,
-        RED = 4,
-        MAGENTA = 5,
-        BROWN = 6,
-        LIGHT_GREY = 7,
-        DARK_GREY = 8,
-        LIGHT_BLUE = 9,
-        LIGHT_GREEN = 10,
-        LIGHT_CYAN = 11,
-        LIGHT_RED = 12,
-        LIGHT_MAGENTA = 13,
-        LIGHT_BROWN = 14,
-        WHITE = 15,
+
+    public:
+        /**
+         * @brief      VGA colors
+         * List of all the colors available for the VGA.
+         * The first 8 colors are the normal ones, the last 8 are the bright ones.
+         * See the official VGA documentation for more information.
+         * https://en.wikipedia.org/wiki/VGA-compatible_text_mode#Color_attributes
+        */
+        enum color
+        {
+            BLACK = 0,
+            BLUE = 1,
+            GREEN = 2,
+            CYAN = 3,
+            RED = 4,
+            MAGENTA = 5,
+            BROWN = 6,
+            LIGHT_GREY = 7,
+            DARK_GREY = 8,
+            LIGHT_BLUE = 9,
+            LIGHT_GREEN = 10,
+            LIGHT_CYAN = 11,
+            LIGHT_RED = 12,
+            LIGHT_MAGENTA = 13,
+            LIGHT_BROWN = 14,
+            WHITE = 15,
+        };
+
+        VGA(void);
+
+        /**
+         * @brief      Put a character on the VGA buffer
+         * It print a char on the next available position.
+        */
+        void putc(unsigned char c);
+
+        /**
+         * @brief      Put a const char * on the VGA buffer
+         * It print a string on the next available position.
+        */
+        void puts(const char *str);
+
+        void clear();
+
+        void puti(int i);
+
+    private:
+        size_t row;
+        size_t col;
+        VGA_entry_color color;
+        VGA_buffer buffer;
+
+        VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
+        VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
     };
-
-    VGA(void);
-
-    /**
-     * @brief      Put a character on the VGA buffer
-     * It print a char on the next available position.
-    */
-    void putc(unsigned char c);
-
-    /**
-     * @brief      Put a const char * on the VGA buffer
-     * It print a string on the next available position.
-    */
-    void puts(const char *str);
-
-    void clear();
-
-    void puti(int i);
-
-private:
-    size_t row;
-    size_t col;
-    VGA_entry_color color;
-    VGA_buffer buffer;
-
-    VGA_entry_color colorEntry(enum VGA::color fg, enum VGA::color bg);
-    VGA_entry vgaEntry(unsigned char c, VGA_entry_color color);
 };
 
 #endif

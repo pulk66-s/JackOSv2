@@ -24,7 +24,7 @@ CPP_SRC		= 	Kernel.cpp \
 				IDT/Handler/handlers.cpp \
 				PIC/PIC.cpp \
 				GDT/GDT.cpp \
-				keyboard/Keyboard.cpp \
+				PS2/keyboard/Keyboard.cpp \
 
 ASM_SRC		=	GDT/load_gdt.s \
 				IDT/interrupts.s \
