@@ -18,6 +18,9 @@ KERNEL_DIR 		:= ./kernel/
 ## Libs directory
 LIBS_DIR		:= ./libs/
 
+## Programs directory
+PRGM_DIR		:= ./prgm/
+
 ## GRUB variables
 GRUB_FILE		:= grub2-file
 GRUB_FILE_FLAGS	:= --is-x86-multiboot
@@ -56,6 +59,7 @@ build_submakefiles:
 	@$(MAKE) -C $(BOOT_DIR) build
 	@$(MAKE) -C $(KERNEL_DIR) build
 	@$(MAKE) -C $(LIBS_DIR) build
+	@$(MAKE) -C $(PRGM_DIR) build
 
 ## Clean the whole project except the executable
 clean:
@@ -63,6 +67,7 @@ clean:
 	@$(MAKE) -C $(BOOT_DIR) clean
 	@$(MAKE) -C $(KERNEL_DIR) clean
 	@$(MAKE) -C $(LIBS_DIR) clean
+	@$(MAKE) -C $(PRGM_DIR) clean
 
 ## Clean the whole project
 fclean: clean
