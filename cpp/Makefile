@@ -30,6 +30,10 @@ fclean:
 	$(MAKE) -C ./src/ fclean
 	$(RM) -rf ./bin
 
+# Run the tests
+tests_run: build
+	$(MAKE) -C ./tests/
+
 # Run with qemu
 run_qemu:
 	$(QEMU) $(QEMU_FLAGS) ./bin/$(BOOT_BIN_NAME)
