@@ -7,13 +7,26 @@
 include ./../config.mk
 
 ## Project submodules
-SUBMODULES	:=	./boot
+SUBMODULES		:=	./boot \
+				./kernel \
+
+## ELF files to build
+ELF_FOLDER		:=	./../bin
+ELF_FILES		:=	$(ELF_FOLDER)/$(BOOT_ELF_NAME) \
+					$(ELF_FOLDER)/$(KERNEL_ELF_NAME) \
+
+## Bin files to create iso
+BIN_FOLDER		:=	./../bin
+BIN_FOLDER_ISO	:=	$(BIN_FOLDER)/boot.bin \
+					$(BIN_FOLDER)/kernel.bin \
 
 ## By default we are building the application
 all: build
 
 # Build the application
 build: __build_message build_submodules
+	@echo -e "$(GREEN)Linking all ELF files...$(NC)"
+	cat $(BIN_FOLDER_ISO) > $(BIN_FOLDER)/$(OS_NAME).iso
 
 # Compile all submodules
 build_submodules:

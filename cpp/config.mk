@@ -28,3 +28,8 @@ QEMU_FLAGS=
 ## Files
 BOOT_BIN_NAME=boot.bin
 BOOT_ELF_NAME=boot.elf
+
+KERNEL_ELF_NAME=kernel.elf
+KERNEL_BIN_NAME=kernel.bin
+
+OS_NAME=JackOS

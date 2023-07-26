@@ -4,36 +4,59 @@
 .global _start
 
 _start:
-	# We need to clean the interrupt flag, because we are going to use the interrupt
-	cli
-	
-	xor	%ax, %ax
-	mov	%ax, %ds
+	# Starting message
 	mov	$msg, %si
-	cld
+	call print_msg
+	mov $newline, %si
+	call print_msg
 
-loop:
-	# Load the byte at SI (the next character of the message) into AL
-	lodsb
+	# Remember that the BIOS sets up the boot drive in 'dl' on boot
+	mov %dl, BOOT_DRIVE
+	
+	# Setup the stack memory. It's described by two differents registers
+	# bp: Base Pointer
+	# sp: Stack Pointer
+	# We set the base stack memory at 0x9000
+	mov $0x9000, %bp
+	mov %bp, %sp
 
-	# Check if the character is null (end of the string)
-	or	%al, %al
-	jz	hang	# If null, jump to the hang label to create an infinite loop
+	call load_kernel
 
-	# If the character is not null, prepare and invoke the BIOS interrupt to print the character
-	mov	$0x0E, %ah	# Function number 0x0E - Write Character Teletype
-	mov	$0x00, %bh	# Page number (0x00 for video page)
-	int	$0x10		# Invoke BIOS interrupt 0x10
+	mov $error, %si
+	call print_msg
+	call switch_to_pm
 
-	# Continue with the next character in the message
-	jmp	loop
+# Load the kernel from the disk
+.code16
+load_kernel:
+	mov $load_kernel_msg, %si
+	call print_msg
+
+	mov $KERNEL_OFFSET, %bx
+	mov $0x02, %ah
+	mov BOOT_DRIVE, %dl
+	call disk_load
+	ret
+
+.code32
+BEGIN_PM:
+	call KERNEL_OFFSET
+	jmp hang
 
 hang:
-	jmp	hang
+	jmp hang
 
-# Message to print on the screen
-msg:
-	.string "BOOTLOADER"
+.code16
+
+BOOT_DRIVE: .byte 0x00
+
+# The kernel is loaded at 0x1000
+KERNEL_OFFSET = 0x1000
+
+.include "print.s"
+.include "message.s"
+.include "switch.s"
+.include "disk.s"
 
 # We need to fill the rest of the 510 bytes with 0x00
 # So we use the .fill directive

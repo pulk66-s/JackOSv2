@@ -36,7 +36,7 @@ tests_run: build
 
 # Run with qemu
 run_qemu:
-	$(QEMU) $(QEMU_FLAGS) ./bin/$(BOOT_BIN_NAME)
+	$(QEMU) $(QEMU_FLAGS) ./bin/$(OS_NAME).iso
 
 # Rebuilding all the application
 re: fclean all
