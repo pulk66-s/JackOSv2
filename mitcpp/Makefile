@@ -4,11 +4,11 @@
 ## but it's made learning the MIT 2012 6.828 course
 ##
 
+## Set the environment variable PROJECT_PWD to the current pwd
+export PROJECT_PWD 	:= $(shell pwd)
+
 ## Include the configuration file
 include config.mk
-
-## Set the environment variable PROJECT_PWD to the current pwd
-export PROJECT_PWD := $(shell pwd)
 
 ## By default it build the kernel
 all: build
@@ -23,6 +23,7 @@ __build_message:
 ## Cleaning the project
 clean:
 	@echo -e "$(GREEN)Cleaning $(OS_NAME)...$(NC)"
+	echo "SRC_DIR: $(SRC_DIR)"
 	@$(MAKE) -C $(SRC_DIR) clean
 
 ## Full cleaning the project, it calls clean first
@@ -32,3 +33,7 @@ fclean: clean
 
 ## Rebuilding the project, it calls fclean and build
 re: fclean build
+
+## Run the project with qemu
+qemu:
+	@echo -e "$(GREEN)Running $(OS_NAME) with qemu...$(NC)"

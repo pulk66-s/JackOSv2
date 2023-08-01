@@ -1,0 +1,21 @@
+##
+## This Sub Makefile compiles the boot process of the MIT C++ version of Jackos
+## It includes all the boot sector and the kernel loading
+##
+
+## Curr Dir
+DIR				:= $(BOOT_DIR)
+
+## Add the current dir to the dirs list
+DIRS			+= $(DIR)
+
+## All boot sources
+BOOT_SOURCES	:= $(DIR)/boot_sector.s
+
+## Adding the boot objects to the project objects
+ASM_SOURCES		+= $(BOOT_SOURCES)
+
+## Comping boot sources asm
+$(OBJ_DIR)/$(BOOT_NAME)/%.s.o: $(BOOT_DIR)/%.s
+	@echo -e "$(GREEN)Compiling $(OS_NAME) Boot Sources...$(NC)"
+	@$(AS) $(ASFLAGS) $< -o $@
