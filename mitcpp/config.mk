@@ -9,6 +9,7 @@ OS_NAME 			:= MITJackos
 ## Echo COLORS
 GREEN 				:= \033[0;32m
 RED 				:= \033[0;31m
+YELLOW 				:= \033[0;33m
 NC 					:= \033[0m
 
 ## Project folders
@@ -18,6 +19,7 @@ BOOT_DIR			:= $(SRC_DIR)/$(BOOT_NAME)
 OBJ_DIR				:= $(PROJECT_PWD)/obj
 BIN_FOLDER			:= $(PROJECT_PWD)/bin
 KERNEL_FOLDER		:= $(SRC_DIR)/kernel
+INCLUDE_FOLDER		:= $(SRC_DIR)/include
 GENERATED_FOLDERS	:= $(OBJ_DIR) \
 					$(BIN_FOLDER) \
 
@@ -40,7 +42,7 @@ PYTHON				:= python3
 OBJCOPY				:= $(HOME)/cc/bin/i686-elf-objcopy
 
 ## Flags
-CFLAGS				:= -W -Wall -Wextra -Werror
+CFLAGS				:= 
 ASFLAGS				:=
 QEMU_FLAGS			:= -serial mon:stdio
 LD_FLAGS			:=

@@ -6,12 +6,6 @@
 ## Include the configuration file
 include ../config.mk
 
-## All the ASM sources
-ASM_SOURCES		:= 
-
-## All the C++ sources
-CPP_SOURCES		:=
-
 ## All the existing dirs
 DIRS			:= 
 
