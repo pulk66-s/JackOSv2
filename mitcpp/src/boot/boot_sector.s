@@ -43,7 +43,7 @@ enableA20_step1:
 enableA20_step2:
     inb $0x64, %al
     testb $0x2, %al     # Test if the bit 1 is set
-    jnz enableA20_step2 # If it's set, it means the input is not clear, we need to wait
+    jnz enableA20_step2 # If it's set, it means the input is no²t clear, we need to wait
 
     movb $0xdf, %al
     outb %al, $0x60
@@ -57,4 +57,3 @@ loadingError:
 # Infinite loop to avoid the kernel to crash
 hang:
     jmp hang
-

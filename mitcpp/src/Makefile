@@ -7,30 +7,28 @@
 include ../config.mk
 
 ## All the ASM sources
-ASM_SOURCES	:= 
+ASM_SOURCES		:= 
 
 ## All the C++ sources
-CPP_SOURCES	:=
+CPP_SOURCES		:=
 
 ## All the existing dirs
-DIRS		:= 
+DIRS			:= 
+
+## Kernel LD Flags
+KERN_LD_FLAGS	:= $(LD_FLAGS) -T $(KERNEL_LINKER)
 
 ## Include the submakefiles
 include boot/Makefrag
 
-## All the project OBJECTS replacing src/ in each line with obj/
-OBJ			:= $(ASM_SOURCES:.s=.s.o) $(CPP_SOURCES:.cpp=.cpp.o)
-OBJ			:= $(subst $(SRC_DIR),$(OBJ_DIR),$(OBJ))
-
 ## All the existing dirs replacing src/ in each line with obj/
-DIRS		:= $(subst $(SRC_DIR),$(OBJ_DIR),$(DIRS))
+DIRS			:= $(subst $(SRC_DIR),$(OBJ_DIR),$(DIRS))
 
 ## By default it build the kernel
 all: build
 
 ## Building the project
-build: __build_message build_file_arch $(OBJ)
-	echo "All objects: $(OBJ)"
+build: __build_message build_file_arch $(KERNEL_IMG)
 
 ## Building the file architecture
 build_file_arch:
@@ -67,3 +65,10 @@ fclean: clean
 
 ## Rebuilding sources
 re: fclean build
+
+## Creating the kernel image
+$(KERNEL_IMG): $(BOOT_BIN)
+	@echo -e "$(GREEN)Building $(OS_NAME) Image...$(NC)"
+	@dd if=/dev/zero of=$(KERNEL_IMG)~ count=10000 2> /dev/null
+	@dd if=$(BOOT_BIN) of=$(KERNEL_IMG)~ conv=notrunc 2> /dev/null
+	@mv $(KERNEL_IMG)~ $(KERNEL_IMG)

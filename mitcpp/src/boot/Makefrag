@@ -12,6 +12,10 @@ DIRS			+= $(DIR)
 ## All boot sources
 BOOT_SOURCES	:= $(DIR)/boot_sector.s
 
+## All boot objects
+BOOT_OBJECTS	:= $(BOOT_SOURCES:.s=.s.o)
+BOOT_OBJECTS	:= $(subst $(SRC_DIR), $(OBJ_DIR), $(BOOT_OBJECTS))
+
 ## Adding the boot objects to the project objects
 ASM_SOURCES		+= $(BOOT_SOURCES)
 
@@ -19,3 +23,11 @@ ASM_SOURCES		+= $(BOOT_SOURCES)
 $(OBJ_DIR)/$(BOOT_NAME)/%.s.o: $(BOOT_DIR)/%.s
 	@echo -e "$(GREEN)Compiling $(OS_NAME) Boot Sources...$(NC)"
 	@$(AS) $(ASFLAGS) $< -o $@
+
+## Creating the boot binary
+$(BOOT_BIN): $(BOOT_OBJECTS)
+	@echo -e "$(GREEN)Building $(BOOT_NAME) Binary...$(NC)"
+	echo "BOOT OBJECTS: $(BOOT_OBJECTS)"
+	@$(LD) $(BOOT_OBJECTS) $(LD_FLAGS) -N -e start -Ttext 0x7C00 -o $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).out
+	@$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).out $(BOOT_BIN)
+	@$(PYTHON) $(BOOT_DIR)/sign.py $(BOOT_BIN)
