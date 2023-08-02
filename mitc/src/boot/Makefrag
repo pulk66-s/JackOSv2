@@ -1,0 +1,42 @@
+##
+## This Sub Makefile compiles the boot process of the MIT C version of Jackos
+## It includes all the boot sector and the kernel loading
+##
+
+## Curr Dir
+DIR					:=	$(BOOT_DIR)
+
+## Add the current dir to the dirs list
+DIRS				+= 	$(DIR)
+
+## All boot ASM sources
+BOOT_ASM_SOURCES	:= 	$(DIR)/boot_sector.S
+
+## All boot c sources
+BOOT_C_SOURCES		:= 	$(DIR)/main.c
+
+## Boot C FLAGS
+BOOT_CFLAGS			:= 	$(CFLAGS) -pipe -MD -fno-omit-frame-pointer -gstabs -m32 -DJOS_KERNEL
+
+## All boot objects
+BOOT_OBJECTS	:= $(BOOT_ASM_SOURCES:.S=.S.o) $(BOOT_C_SOURCES:.c=.c.o)
+BOOT_OBJECTS	:= $(subst $(SRC_DIR), $(OBJ_DIR), $(BOOT_OBJECTS))
+
+## Comping boot sources asm
+$(OBJ_DIR)/$(BOOT_NAME)/%.S.o: $(BOOT_DIR)/%.S
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) $(BOOT_CFLAGS) -I$(INCLUDE_FOLDER) -c $< -o $@
+
+## Comping boot sources c
+$(OBJ_DIR)/$(BOOT_NAME)/%.c.o: $(BOOT_DIR)/%.c
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) $(BOOT_CFLAGS) -I$(INCLUDE_FOLDER) -c $< -o $@
+
+## Creating the boot binary
+$(BOOT_BIN): $(BOOT_OBJECTS)
+	@echo -e "$(GREEN)Building $(BOOT_NAME) Binary...$(NC)"
+	@$(LD) $(BOOT_OBJECTS) $(LD_FLAGS) -N -e start -Ttext 0x7C00 -o $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).out
+	@$(OBJDUMP) -S $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).out > $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).asm
+	@$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).out $(BOOT_BIN)
+	@$(PYTHON) $(BOOT_DIR)/sign.py $(BOOT_BIN)
+

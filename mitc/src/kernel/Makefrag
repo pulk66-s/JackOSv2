@@ -1,0 +1,10 @@
+##
+## This MakeFragment compiles the kernel of the MIT C version of Jackos
+##
+
+## Curr Dir
+DIR					:=	$(KERNEL_DIR)
+
+## Add the current dir to the dirs list
+DIRS				+= 	$(DIR)
+
