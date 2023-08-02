@@ -8,3 +8,36 @@ DIR					:=	$(KERNEL_DIR)
 ## Add the current dir to the dirs list
 DIRS				+= 	$(DIR)
 
+## Kernel Sources
+KERNEL_CSOURCES		:=	$(DIR)/entry.c \
+						$(DIR)/init.c
+
+## Kernel GAS Sources
+KERNEL_ASOURCES		:=	$(DIR)/entry.S
+
+## Kernel OBJ
+KERNEL_OBJ			:=	$(KERNEL_CSOURCES:.c=.c.o) $(KERNEL_ASOURCES:.S=.S.o)
+KERNEL_OBJ			:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(KERNEL_OBJ))
+
+## Kernel Cflags
+KERNEL_CFLAGS		:= 	$(CFLAGS) -pipe -MD -fno-omit-frame-pointer -gstabs -m32 -DJOS_KERNEL
+
+## Kernel LD Flags
+KERNEL_LD_FLAGS		:=	$(LD_FLAGS) -T $(DIR)/kernel.ld -nostdlib
+
+## Creating the kernel binary
+$(KERNEL_BIN): $(KERNEL_OBJ)
+	$(LD) $(KERN_LD_FLAGS) $(KERNEL_OBJ) -o $(KERNEL_BIN)
+	$(LD) -o $@ $(KERN_LD_FLAGS) $(KERNEL_OBJ) -b binary $(KERNEL_BIN)
+	$(OBJDUMP) -S $@ > $@.asm
+	$(NM) -n $@ > $@.sym
+
+## Compiling the kernel C sources
+$(OBJ_DIR)/$(KERNEL_NAME)/%.c.o: $(KERNEL_DIR)/%.c
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+
+## Compiling the kernel GAS sources
+$(OBJ_DIR)/$(KERNEL_NAME)/%.S.o: $(KERNEL_DIR)/%.S
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@

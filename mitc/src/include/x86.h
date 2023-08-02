@@ -16,13 +16,13 @@
  * @param port The port to read.
  * @return The data read from the port.
  */
-static uint8_t inb(int port)
+static inline uint8_t inb(int port)
 {
     uint8_t data;
 
-    asm("inb %w1,%0"
-        : "=a"(data)
-        : "d"(port));
+    asm volatile("inb %w1,%0"
+                 : "=a"(data)
+                 : "d"(port));
     return data;
 }
 
@@ -31,18 +31,18 @@ static uint8_t inb(int port)
  * @param port The port to write.
  * @param data The data to write.
  */
-static void outb(int port, uint8_t data)
+static inline void outb(int port, uint8_t data)
 {
-    asm("outb %0,%w1"
-        :
-        : "a"(data), "d"(port));
+    asm volatile("outb %0,%w1"
+                 :
+                 : "a"(data), "d"(port));
 }
 
 /**
  * @brief   This function read 'cnt' bytes from the port 'port' and write it to
  * the address 'addr'.
  */
-static void insl(int port, void *addr, int cnt)
+static inline void insl(int port, void *addr, int cnt)
 {
     asm volatile("cld\n\trepne\n\tinsl"
                  : "=D"(addr), "=c"(cnt)

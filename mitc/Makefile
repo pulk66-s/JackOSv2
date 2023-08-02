@@ -15,7 +15,8 @@ all: build
 
 ## Building the project
 build: __build_message
-	@$(MAKE) -C $(SRC_DIR) build
+	echo "@ $(VERBOSE)"
+	@$(MAKE) -C $(SRC_DIR) build VERBOSE=$(VERBOSE)
 
 __build_message:
 	@echo -e "$(GREEN)Building $(OS_NAME)...$(NC)"

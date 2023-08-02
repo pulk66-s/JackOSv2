@@ -43,9 +43,8 @@ submodules:
 	done
 
 __build_message:
+	echo "@ $(VERBOSE)"
 	@echo -e "$(GREEN)Building $(OS_NAME) Sources...$(NC)"
-	echo "BOOT OBJ $(BOOT_DIR)/.s.o"
-	echo "ASM SRC $(ASM_SOURCES)"
 
 ## Cleaning the project
 clean:
@@ -62,8 +61,9 @@ fclean: clean
 re: fclean build
 
 ## Creating the kernel image
-$(KERNEL_IMG): $(BOOT_BIN)
+$(KERNEL_IMG): $(BOOT_BIN) $(KERNEL_BIN)
 	@echo -e "$(GREEN)Building $(OS_NAME) Image...$(NC)"
 	@dd if=/dev/zero of=$(KERNEL_IMG)~ count=10000 2> /dev/null
 	@dd if=$(BOOT_BIN) of=$(KERNEL_IMG)~ conv=notrunc 2> /dev/null
+	@dd if=$(KERNEL_BIN) of=$(KERNEL_IMG)~ conv=notrunc seek=1 2> /dev/null
 	@mv $(KERNEL_IMG)~ $(KERNEL_IMG)
