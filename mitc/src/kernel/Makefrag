@@ -9,14 +9,14 @@ DIR					:=	$(KERNEL_DIR)
 DIRS				+= 	$(DIR)
 
 ## Kernel Sources
-KERNEL_CSOURCES		:=	$(DIR)/entry.c \
-						$(DIR)/init.c
+KERNEL_CSOURCES		:=	$(DIR)/init.c	\
+						$(DIR)/entrypgdir.c
 
 ## Kernel GAS Sources
 KERNEL_ASOURCES		:=	$(DIR)/entry.S
 
 ## Kernel OBJ
-KERNEL_OBJ			:=	$(KERNEL_CSOURCES:.c=.c.o) $(KERNEL_ASOURCES:.S=.S.o)
+KERNEL_OBJ			:=	$(KERNEL_ASOURCES:.S=.S.o) $(KERNEL_CSOURCES:.c=.c.o)
 KERNEL_OBJ			:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(KERNEL_OBJ))
 
 ## Kernel Cflags
