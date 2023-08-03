@@ -1,0 +1,35 @@
+##
+## This Makefrag compiles the kernel of the MIT C version of Jackos
+## Not working yet
+##
+
+## Curr Dir
+DIR			:=	$(LIB_DIR)
+
+## Add the current dir to the dirs list
+DIRS		+= 	$(DIR) $(DIR)/string
+
+## Lib Sources
+LIB_SRC		:=	$(DIR)/string/strlen.c	\
+				$(DIR)/string/format.c	\
+				$(DIR)/string/revstr.c	\
+				$(DIR)/string/itoa.c
+
+## Lib OBJ
+LIB_OBJ		:=	$(LIB_SRC:.c=.c.o)
+
+## Change SRC_DIR to OBJ_DIR
+LIB_OBJ		:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(LIB_OBJ))
+
+## Lib flags
+LIB_FLAGS	:=	-W -Wall -Wextra -Werror -I$(SRC_DIR) -nostdinc -fno-builtin
+
+## Create the CLib.a file
+$(LIB_PATH): $(LIB_OBJ)
+	@echo -e "$(GREEN)Creating $@...$(NC)"
+	$(AR) rcs $@ $^
+
+## Compiling the Lib C objects
+$(OBJ_DIR)/$(CLIB_NAME)/string/%.c.o: $(DIR)/string/%.c
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) -c $(LIB_FLAGS) $< -o $@

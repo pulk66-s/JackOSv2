@@ -6,11 +6,15 @@
 DIR					:=	$(KERNEL_DIR)
 
 ## Add the current dir to the dirs list
-DIRS				+= 	$(DIR)
+DIRS				+= 	$(DIR) $(LIB_DIR) $(DIR)/CGA
 
 ## Kernel Sources
-KERNEL_CSOURCES		:=	$(DIR)/init.c	\
-						$(DIR)/entrypgdir.c
+KERNEL_CSOURCES		:=	$(DIR)/init.c				\
+						$(DIR)/entrypgdir.c			\
+						$(LIB_DIR)/string/strlen.c	\
+						$(LIB_DIR)/string/itoa.c	\
+						$(LIB_DIR)/string/revstr.c	\
+						$(DIR)/CGA/print.c
 
 ## Kernel GAS Sources
 KERNEL_ASOURCES		:=	$(DIR)/entry.S
@@ -27,7 +31,8 @@ KERNEL_LD_FLAGS		:=	$(LD_FLAGS) -T $(DIR)/kernel.ld -nostdlib
 
 ## Creating the kernel binary
 $(KERNEL_BIN): $(KERNEL_OBJ)
-	$(LD) $(KERN_LD_FLAGS) $(KERNEL_OBJ) -o $(KERNEL_BIN)
+	@echo -e "$(GREEN)Linking $@...$(NC)"
+	echo "LIB_PATH $(LIB_PATH)"
 	$(LD) -o $@ $(KERN_LD_FLAGS) $(KERNEL_OBJ) -b binary $(KERNEL_BIN)
 	$(OBJDUMP) -S $@ > $@.asm
 	$(NM) -n $@ > $@.sym
@@ -36,6 +41,7 @@ $(KERNEL_BIN): $(KERNEL_OBJ)
 $(OBJ_DIR)/$(KERNEL_NAME)/%.c.o: $(KERNEL_DIR)/%.c
 	@echo -e "$(YELLOW)Compiling $@...$(NC)"
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+	$(OBJDUMP) -S $@ > $@.asm
 
 ## Compiling the kernel GAS sources
 $(OBJ_DIR)/$(KERNEL_NAME)/%.S.o: $(KERNEL_DIR)/%.S

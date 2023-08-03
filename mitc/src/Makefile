@@ -15,6 +15,7 @@ KERN_LD_FLAGS	:= $(LD_FLAGS) -T $(KERNEL_LINKER)
 ## Include the submakefiles
 include boot/Makefrag
 include kernel/Makefrag
+include libclib/Makefrag
 
 ## All the existing dirs replacing src/ in each line with obj/
 DIRS			:= $(subst $(SRC_DIR),$(OBJ_DIR),$(DIRS))
