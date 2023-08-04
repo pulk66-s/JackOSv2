@@ -7,7 +7,7 @@
 DIR			:=	$(LIB_DIR)
 
 ## Add the current dir to the dirs list
-DIRS		+= 	$(DIR) $(DIR)/string
+DIRS		+= 	$(DIR) $(DIR)/string $(DIR)/memory
 
 ## Lib Sources
 LIB_SRC		:=	$(DIR)/string/strlen.c	\
@@ -30,6 +30,6 @@ $(LIB_PATH): $(LIB_OBJ)
 	$(AR) rcs $@ $^
 
 ## Compiling the Lib C objects
-$(OBJ_DIR)/$(CLIB_NAME)/string/%.c.o: $(DIR)/string/%.c
+$(OBJ_DIR)/$(CLIB_NAME)/%.c.o: $(DIR)/%.c
 	@echo -e "$(YELLOW)Compiling $@...$(NC)"
 	$(CC) -c $(LIB_FLAGS) $< -o $@

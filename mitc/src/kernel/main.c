@@ -1,15 +1,27 @@
 #include <include/clib/string.h>
+#include <include/clib/memory.h>
 #include <include/console.h>
 #include <include/graphics/CGA.h>
 
-int i386_init(void)
+/**
+ * @brief   End the ELF loading process
+*/
+static inline void end_elf_process(void)
 {
-    // unsigned char *cga_buffer = (unsigned char *)CGA_BASE;
+    extern char edata[], end[];
 
-    // cga_buffer[0] = '!';
-    // cga_buffer[1] = 0x0f;
-    // cga_init();
-    // cga_putc('!', 0, 0, CGA_COLOR(CGA_COLOR_WHITE, CGA_COLOR_BLACK));
+    // Before doing anything else, complete the ELF loading process.
+    // Clear the uninitialized global data (BSS) section of our program.
+    // This ensures that all static/global variables start out zero.
+    memset(edata, 0, end - edata);
+}
+
+/**
+ * @brief   Initialize the i386 architecture
+*/
+void i386_init(void)
+{
+    end_elf_process();
     console_init(NULL);
     kcons_printc('!');
     kcons_prints("Hello, world!");

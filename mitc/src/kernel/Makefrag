@@ -14,6 +14,7 @@ KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(LIB_DIR)/string/strlen.c	\
 						$(LIB_DIR)/string/itoa.c	\
 						$(LIB_DIR)/string/revstr.c	\
+						$(LIB_DIR)/memory/memset.c	\
 						$(DIR)/CGA/print.c			\
 						$(DIR)/console/init.c		\
 						$(DIR)/console/print.c		\
