@@ -6,15 +6,17 @@
 DIR					:=	$(KERNEL_DIR)
 
 ## Add the current dir to the dirs list
-DIRS				+= 	$(DIR) $(LIB_DIR) $(DIR)/CGA
+DIRS				+= 	$(DIR) $(LIB_DIR) $(DIR)/CGA $(DIR)/console
 
 ## Kernel Sources
-KERNEL_CSOURCES		:=	$(DIR)/init.c				\
+KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(DIR)/entrypgdir.c			\
 						$(LIB_DIR)/string/strlen.c	\
 						$(LIB_DIR)/string/itoa.c	\
 						$(LIB_DIR)/string/revstr.c	\
-						$(DIR)/CGA/print.c
+						$(DIR)/CGA/print.c			\
+						$(DIR)/console/init.c		\
+						$(DIR)/console/print.c		\
 
 ## Kernel GAS Sources
 KERNEL_ASOURCES		:=	$(DIR)/entry.S

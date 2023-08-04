@@ -9,6 +9,7 @@
 #define __JOS_INCLUDE_GRAPHICS_CGA_H__
 
 #include <include/types.h>
+#include <include/memlayout.h>
 
 // CGA Buffer Address, we are adding KERNEL_BASE because we hare using a
 // virtual memory system
@@ -58,7 +59,7 @@ void cga_putc(char c, uint8_t x, uint8_t y, cga_color_t color);
  * @param   y       The y position of the string
  * @param   color   The color of the string
 */
-void cga_puts(char *str, uint8_t x, uint8_t y, cga_color_t color);
+void cga_puts(const char *str, uint8_t x, uint8_t y, cga_color_t color);
 
 /**
  * @brief           Print a number on the screen

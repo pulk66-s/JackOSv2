@@ -13,7 +13,7 @@
 // CGA buffer
 static uint8_t *cga_buffer = NULL;
 
-static inline void put_char_in_buffer(char c, uint8_t x, uint8_t y, cga_color_t color) {
+static inline void put_char_in_buffer(char c, uint8_t x, uint8_t y, uint8_t color) {
     cga_buffer[(y * CGA_WIDTH) + x] = c;
     cga_buffer[(y * CGA_WIDTH) + x + 1] = color;
 }
@@ -25,7 +25,7 @@ static inline void put_char_in_buffer(char c, uint8_t x, uint8_t y, cga_color_t 
  * @param   y       The y position of the character
  * @param   color   The color of the character
 */
-void cga_putc(char c, uint8_t x, uint8_t y, cga_color_t color) {
+void cga_putc(char c, uint8_t x, uint8_t y, uint8_t color) {
     if (!cga_buffer)
         return;
     put_char_in_buffer(c, x * 2, y, color);
@@ -38,7 +38,7 @@ void cga_putc(char c, uint8_t x, uint8_t y, cga_color_t color) {
  * @param   y       The y position of the string
  * @param   color   The color of the string
 */
-void cga_puts(char *str, uint8_t x, uint8_t y, cga_color_t color) {
+void cga_puts(const char *str, uint8_t x, uint8_t y, uint8_t color) {
     if (!cga_buffer)
         return;
     for (size_t i = 0; str[i] != '\0'; i++) {
@@ -53,7 +53,7 @@ void cga_puts(char *str, uint8_t x, uint8_t y, cga_color_t color) {
  * @param   y       The y position of the number
  * @param   color   The color of the number
 */
-void cga_putn(int num, uint8_t x, uint8_t y, cga_color_t color) {
+void cga_putn(int num, uint8_t x, uint8_t y, uint8_t color) {
     char buffer[MAX_INT_SIZE] = {0};
 
     if (!cga_buffer)
@@ -66,8 +66,6 @@ void cga_putn(int num, uint8_t x, uint8_t y, cga_color_t color) {
  * @brief   Init the CGA driver
 */
 void cga_init() {
-    if (!cga_buffer)
-        return;
     cga_buffer = (uint8_t *)CGA_BASE;
     cga_clear();
 }
