@@ -23,6 +23,7 @@ void i386_init(void)
 {
     end_elf_process();
     console_init(NULL);
+    kcons_set_color(CGA_COLOR(CGA_COLOR_LIGHT_GREY, CGA_COLOR_RED));
     kcons_printc('!');
     kcons_prints("Hello, world!");
     kcons_printn(42);

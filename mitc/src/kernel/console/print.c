@@ -58,3 +58,13 @@ void kcons_printn(int n) {
     console->x += len;
     check_newline();
 }
+
+/**
+ * @brief       Change the color of the console
+ * @param   color   The new color
+*/
+void kcons_set_color(uint8_t color) {
+    struct console *console = get_console();
+
+    console->color = color;
+}

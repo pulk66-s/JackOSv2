@@ -59,4 +59,10 @@ void kcons_prints(const char *str);
 */
 void kcons_printn(int n);
 
+/**
+ * @brief       Change the color of the console
+ * @param   color   The new color
+*/
+void kcons_set_color(uint8_t color);
+
 #endif
