@@ -23,6 +23,6 @@ void i386_init(void)
 {
     end_elf_process();
     console_init(NULL);
-    panic("i386_init");
+    kcons_prints("Welcome to the JOS kernel!\n");
     for (;;);
 }
