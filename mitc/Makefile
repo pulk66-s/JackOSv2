@@ -36,6 +36,6 @@ fclean: clean
 re: fclean build
 
 ## Run the project with qemu
-qemu:
+qemu: build
 	@echo -e "$(GREEN)Running $(OS_NAME) with qemu...$(NC)"
 	$(QEMU) $(QEMU_FLAGS)  -hda $(KERNEL_IMG)

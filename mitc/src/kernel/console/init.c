@@ -21,13 +21,15 @@ static inline void init_cga_console(void) {
         .width = CGA_WIDTH,
         .height = CGA_HEIGHT,
         .color = CGA_COLOR(CGA_COLOR_WHITE, CGA_COLOR_BLACK),
-        .interface = (struct console_interface) {
-            .init = cga_init,
-            .clear = cga_clear,
-            .putc = cga_putc,
-            .puts = cga_puts,
-            .putn = cga_putn,
-            .printf = cga_printf,
+        .interface = {
+            [0] = (struct console_interface) {
+                .init = cga_init,
+                .clear = cga_clear,
+                .putc = cga_putc,
+                .puts = cga_puts,
+                .putn = cga_putn,
+                .printf = cga_printf,
+            }
         }
     };
 }
@@ -35,13 +37,13 @@ static inline void init_cga_console(void) {
 /**
  * @brief       Init the console
 */
-void console_init(struct console *choosed) {
-    if (choosed == NULL) {
-        init_cga_console();
-    } else {
-        console = *choosed;
+void console_init(struct console_interface *choosed) {
+    init_cga_console();
+    if (choosed) {
+        console.interface[0] = *choosed;
     }
-    console.interface.init();
+    console.nb_interface++;
+    console.interface[0].init();
 }
 
 /**
@@ -50,4 +52,12 @@ void console_init(struct console *choosed) {
 */
 struct console *get_console(void) {
     return &console;
+}
+
+/**
+ * @brief           Add a console interface to the console
+ * @param   inter   The console interface to add
+*/
+void console_add_interface(struct console_interface *inter) {
+    console.interface[console.nb_interface++] = *inter;
 }

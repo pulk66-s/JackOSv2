@@ -39,7 +39,9 @@ void kcons_printc(char c) {
             console->x += 4;
             break;
         default:
-            console->interface.putc(c, console->x, console->y, console->color);
+            for (int i = 0; i < console->nb_interface; i++) {
+                console->interface[i].putc(c, console->x, console->y, console->color);
+            }
             console->x++;
             break;
     }
@@ -66,7 +68,9 @@ void kcons_printn(int n) {
     struct console *console = get_console();
     size_t len = 0;
 
-    console->interface.putn(n, console->x, console->y, console->color);
+    for (int i = 0; i < console->nb_interface; i++) {
+        console->interface[i].putn(n, console->x, console->y, console->color);
+    }
     while (n != 0) {
         n /= 10;
         len++;
@@ -93,5 +97,7 @@ void kcons_set_color(uint8_t color) {
 void kcons_printf(const char *fmt, ...) {
     struct console *console = get_console();
 
-    console->interface.printf(fmt, console->x, console->y, console->color);
+    for (int i = 0; i < console->nb_interface; i++) {
+        console->interface[i].printf(fmt, console->x, console->y, console->color);
+    }
 }

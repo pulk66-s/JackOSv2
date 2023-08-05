@@ -19,6 +19,7 @@ KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(LIB_DIR)/memory/memset.c	\
 						$(DIR)/CGA/print.c			\
 						$(DIR)/serial/init.c		\
+						$(DIR)/serial/print.c		\
 						$(DIR)/console/init.c		\
 						$(DIR)/console/print.c		\
 						$(DIR)/console/panic.c		\

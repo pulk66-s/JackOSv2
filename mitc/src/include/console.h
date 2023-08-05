@@ -12,6 +12,8 @@
 
 #include "types.h"
 
+#define MAX_CONSOLE_INTERFACE 10
+
 struct console_interface {
     void (*init)(void);
     void (*putc)(char c, uint8_t x, uint8_t y, uint8_t color);
@@ -27,14 +29,15 @@ struct console {
     uint8_t width;
     uint8_t height;
     uint8_t color;
-    struct console_interface interface;
+    uint8_t nb_interface;
+    struct console_interface interface[MAX_CONSOLE_INTERFACE];
 };
 
 /**
  * @brief           Init the console
  * @param   console The console to init types to init, if NULL, the CGA is used
 */
-void console_init(struct console *console);
+void console_init(struct console_interface *console);
 
 /**
  * @brief   Get the console
@@ -78,5 +81,11 @@ void kcons_printf(const char *fmt, ...);
  * @param   str The message to print
 */
 void panic(const char *str);
+
+/**
+ * @brief           Add a console interface to the console
+ * @param   inter   The console interface to add
+*/
+void console_add_interface(struct console_interface *inter);
 
 #endif
