@@ -14,10 +14,13 @@ KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(LIB_DIR)/string/strlen.c	\
 						$(LIB_DIR)/string/itoa.c	\
 						$(LIB_DIR)/string/revstr.c	\
+						$(LIB_DIR)/string/format.c	\
+						$(LIB_DIR)/string/strcat.c	\
 						$(LIB_DIR)/memory/memset.c	\
 						$(DIR)/CGA/print.c			\
 						$(DIR)/console/init.c		\
 						$(DIR)/console/print.c		\
+						$(DIR)/console/panic.c		\
 
 ## Kernel GAS Sources
 KERNEL_ASOURCES		:=	$(DIR)/entry.S

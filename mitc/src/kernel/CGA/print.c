@@ -7,7 +7,6 @@
 */
 
 #include <include/graphics/CGA.h>
-#include <include/memlayout.h>
 #include <include/clib/string.h>
 
 // CGA buffer
@@ -78,4 +77,24 @@ void cga_clear() {
         return;
     for (size_t i = 0; i < CGA_WIDTH * CGA_HEIGHT; i++)
         cga_buffer[i] = 0;
+}
+
+/**
+ * @brief   printf implementation for the CGA driver
+ * @param   fmt     The format string
+ * @param   x       The x position of the string
+ * @param   y       The y position of the string
+ * @param   color   The color of the string
+ * @param   ...     The arguments
+ * 
+ * ! This function is not implemented yet, waiting for format_string function
+ * ! implementation
+*/
+void cga_printf(const char *fmt, uint8_t x, uint8_t y, uint8_t color, ...) {
+    va_list args;
+    va_start(args, color);
+    // const char *buff = format_string(fmt, args);
+
+    // cga_puts(buff, x, y, color);
+    va_end(args);
 }

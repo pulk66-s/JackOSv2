@@ -11,6 +11,7 @@
 #define __JOS_CLIB_STRING_H__
 
 #include "../types.h"
+#include "stdarg.h"
 
 #define MAX_INT_SIZE 11
 
@@ -36,5 +37,21 @@ void itoa(int num, char *buff);
  * @param str   The string to reverse
 */
 void revstr(char *str);
+
+/**
+ * @brief       Format a string in printf style
+ * @param fmt   The format string
+ * @param args  The arguments to the format string
+ * @return      The formatted string
+*/
+char *format_string(const char *fmt, va_list args);
+
+/**
+ * @brief       Concatenate two strings
+ * @param dest  The destination string
+ * @param src   The source string
+ * @return      The destination string
+*/
+char *strcat(char *dest, const char *src);
 
 #endif

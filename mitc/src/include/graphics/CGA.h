@@ -80,4 +80,14 @@ void cga_init();
 */
 void cga_clear();
 
+/**
+ * @brief   printf implementation for the CGA driver
+ * @param   fmt     The format string
+ * @param   x       The x position of the string
+ * @param   y       The y position of the string
+ * @param   color   The color of the string
+ * @param   ...     The arguments
+*/
+void cga_printf(const char *fmt, uint8_t x, uint8_t y, uint8_t color, ...);
+
 #endif

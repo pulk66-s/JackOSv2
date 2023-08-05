@@ -18,6 +18,7 @@ struct console_interface {
     void (*puts)(const char *str, uint8_t x, uint8_t y, uint8_t color);
     void (*putn)(int n, uint8_t x, uint8_t y, uint8_t color);
     void (*clear)(void);
+    void (*printf)(const char *fmt, uint8_t x, uint8_t y, uint8_t color, ...);
 };
 
 struct console {
@@ -60,9 +61,22 @@ void kcons_prints(const char *str);
 void kcons_printn(int n);
 
 /**
- * @brief       Change the color of the console
+ * @brief           Change the color of the console
  * @param   color   The new color
 */
 void kcons_set_color(uint8_t color);
+
+/**
+ * @brief       printf implementation for the kernel console
+ * @param   fmt The format string
+ * @param   ... The arguments
+*/
+void kcons_printf(const char *fmt, ...);
+
+/**
+ * @brief       Panic function, it print a message and then halt the system
+ * @param   str The message to print
+*/
+void panic(const char *str);
 
 #endif

@@ -68,3 +68,14 @@ void kcons_set_color(uint8_t color) {
 
     console->color = color;
 }
+
+/**
+ * @brief       printf implementation for the kernel console
+ * @param   fmt The format string
+ * @param   ... The arguments
+*/
+void kcons_printf(const char *fmt, ...) {
+    struct console *console = get_console();
+
+    console->interface.printf(fmt, console->x, console->y, console->color);
+}

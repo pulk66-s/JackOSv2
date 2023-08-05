@@ -27,6 +27,7 @@ static inline void init_cga_console(void) {
             .putc = cga_putc,
             .puts = cga_puts,
             .putn = cga_putn,
+            .printf = cga_printf,
         }
     };
 }
