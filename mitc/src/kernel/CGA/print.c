@@ -13,8 +13,8 @@
 static uint8_t *cga_buffer = NULL;
 
 static inline void put_char_in_buffer(char c, uint8_t x, uint8_t y, uint8_t color) {
-    cga_buffer[(y * CGA_WIDTH) + x] = c;
-    cga_buffer[(y * CGA_WIDTH) + x + 1] = color;
+    cga_buffer[(y * CGA_WIDTH * 2) + x] = c;
+    cga_buffer[(y * CGA_WIDTH * 2) + x + 1] = color;
 }
 
 /**

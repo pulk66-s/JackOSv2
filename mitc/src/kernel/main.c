@@ -2,6 +2,7 @@
 #include <include/clib/memory.h>
 #include <include/console.h>
 #include <include/graphics/CGA.h>
+#include <include/graphics/serial.h>
 
 /**
  * @brief   End the ELF loading process
@@ -17,12 +18,21 @@ static inline void end_elf_process(void)
 }
 
 /**
+ * @brief   Initialize everything
+*/
+static inline void initialize_kernel(void) {
+    serial_init();
+    console_init(NULL);
+}
+
+/**
  * @brief   Initialize the i386 architecture
 */
 void i386_init(void)
 {
     end_elf_process();
-    console_init(NULL);
-    kcons_prints("Welcome to the JOS kernel!\n");
+    initialize_kernel();
+    kcons_prints("Welcome to JOS Kernel !!!\n");
+    kcons_prints("JOS is now running...\n");
     for (;;);
 }

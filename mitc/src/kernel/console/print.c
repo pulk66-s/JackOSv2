@@ -13,6 +13,7 @@ static inline void check_newline(void) {
     struct console *console = get_console();
 
     if (console->x >= console->width) {
+        // for (;;);
         console->x = 0;
         console->y++;
     }
@@ -34,14 +35,15 @@ void kcons_printc(char c) {
             console->x = 0;
             break;
         case '\t':
+            for (;;);
             console->x += 4;
             break;
         default:
             console->interface.putc(c, console->x, console->y, console->color);
             console->x++;
-            check_newline();
             break;
     }
+    check_newline();
 }
 
 /**
@@ -54,7 +56,6 @@ void kcons_prints(const char *str) {
     for (int i = 0; str[i]; i++) {
         kcons_printc(str[i]);
     }
-    check_newline();
 }
 
 /**
