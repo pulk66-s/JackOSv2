@@ -23,6 +23,10 @@ struct console_interface {
     void (*printf)(const char *fmt, uint8_t x, uint8_t y, uint8_t color, ...);
 };
 
+struct console_input_interface {
+    char (*getc)(void);
+};
+
 struct console {
     uint8_t x;
     uint8_t y;
@@ -30,7 +34,8 @@ struct console {
     uint8_t height;
     uint8_t color;
     uint8_t nb_interface;
-    struct console_interface interface[MAX_CONSOLE_INTERFACE];
+    struct console_interface output_interface[MAX_CONSOLE_INTERFACE];
+    struct console_input_interface input_interface;
 };
 
 /**
@@ -86,6 +91,17 @@ void panic(const char *str);
  * @brief           Add a console interface to the console
  * @param   inter   The console interface to add
 */
-void console_add_interface(struct console_interface *inter);
+void console_add_output_interface(struct console_interface *inter);
+
+/**
+ * @brief           Set the input interface of the console
+ * @param   inter   The input interface to set
+*/
+void console_set_input_interface(struct console_input_interface *inter);
+
+/**
+ * @brief           Run the command given by the user
+*/
+void runcmd(void);
 
 #endif

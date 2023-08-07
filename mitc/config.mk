@@ -31,7 +31,6 @@ BOOT_BIN			:=	$(OBJ_DIR)/$(BOOT_NAME)/$(BOOT_NAME).bin
 KERNEL_BIN			:=	$(OBJ_DIR)/$(KERNEL_NAME)/$(KERNEL_NAME).bin
 KERNEL_LINKER		:=	$(KERNEL_DIR)/kernel.ld
 LIB_OBJ_FOLDER		:=	$(OBJ_DIR)/$(CLIB_NAME)
-LIB_PATH			:=	$(LIB_OBJ_FOLDER)/$(CLIB_NAME).a
 
 ## Project Submodules to build
 ## PROJECT_PWD is set in the main Makefile

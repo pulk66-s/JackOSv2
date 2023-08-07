@@ -21,7 +21,7 @@ static inline void init_cga_console(void) {
         .width = CGA_WIDTH,
         .height = CGA_HEIGHT,
         .color = CGA_COLOR(CGA_COLOR_WHITE, CGA_COLOR_BLACK),
-        .interface = {
+        .output_interface = {
             [0] = (struct console_interface) {
                 .init = cga_init,
                 .clear = cga_clear,
@@ -30,6 +30,9 @@ static inline void init_cga_console(void) {
                 .putn = cga_putn,
                 .printf = cga_printf,
             }
+        },
+        .input_interface = {
+            .getc = NULL,
         }
     };
 }
@@ -40,10 +43,10 @@ static inline void init_cga_console(void) {
 void console_init(struct console_interface *choosed) {
     init_cga_console();
     if (choosed) {
-        console.interface[0] = *choosed;
+        console.output_interface[0] = *choosed;
     }
     console.nb_interface++;
-    console.interface[0].init();
+    console.output_interface[0].init();
 }
 
 /**
@@ -58,6 +61,14 @@ struct console *get_console(void) {
  * @brief           Add a console interface to the console
  * @param   inter   The console interface to add
 */
-void console_add_interface(struct console_interface *inter) {
-    console.interface[console.nb_interface++] = *inter;
+void console_add_output_interface(struct console_interface *inter) {
+    console.output_interface[console.nb_interface++] = *inter;
+}
+
+/**
+ * @brief           Set the input interface of the console
+ * @param   inter   The input interface to set
+*/
+void console_set_input_interface(struct console_input_interface *inter) {
+    console.input_interface = *inter;
 }

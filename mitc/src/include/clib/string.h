@@ -54,4 +54,12 @@ char *format_string(const char *fmt, va_list args);
 */
 char *strcat(char *dest, const char *src);
 
+/**
+ * @brief       Compare two strings
+ * @param str1  The first string
+ * @param str2  The second string
+ * @return      0 if the strings are equal, a negative number if str1 < str2, a positive number if str1 > str2
+*/
+int strcmp(const char *str1, const char *str2);
+
 #endif

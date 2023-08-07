@@ -4,32 +4,44 @@
 ##
 
 ## Curr Dir
-DIR			:=	$(LIB_DIR)
+LIB_SRC_DIR		:=	$(LIB_DIR)
+LIB_OBJ_DIR		:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(LIB_SRC_DIR))
 
 ## Add the current dir to the dirs list
-DIRS		+= 	$(DIR) $(DIR)/string $(DIR)/memory
+DIRS			+= 	$(LIB_SRC_DIR) $(LIB_SRC_DIR)/string $(LIB_SRC_DIR)/memory
 
 ## Lib Sources
-LIB_SRC		:=	$(DIR)/string/strlen.c	\
-				$(DIR)/string/format.c	\
-				$(DIR)/string/revstr.c	\
-				$(DIR)/string/itoa.c
+LIB_SRC			:=	$(LIB_SRC_DIR)/string/strlen.c	\
+					$(LIB_SRC_DIR)/string/itoa.c	\
+					$(LIB_SRC_DIR)/string/revstr.c	\
+					$(LIB_SRC_DIR)/string/format.c	\
+					$(LIB_SRC_DIR)/string/strcat.c	\
+					$(LIB_SRC_DIR)/string/strcmp.c	\
+					$(LIB_SRC_DIR)/memory/memset.c	\
 
 ## Lib OBJ
-LIB_OBJ		:=	$(LIB_SRC:.c=.c.o)
+LIB_OBJ			:=	$(LIB_SRC:.c=.c.o)
+LIB_FINAL_OBJ	:=	$(LIB_OBJ_DIR).o
 
 ## Change SRC_DIR to OBJ_DIR
-LIB_OBJ		:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(LIB_OBJ))
+LIB_OBJ			:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(LIB_OBJ))
 
 ## Lib flags
-LIB_FLAGS	:=	-W -Wall -Wextra -Werror -I$(SRC_DIR) -nostdinc -fno-builtin
+LIB_FLAGS		:=	-W -Wall -Wextra -Werror -I$(SRC_DIR) -nostdinc -fno-builtin
 
-## Create the CLib.a file
-$(LIB_PATH): $(LIB_OBJ)
-	@echo -e "$(GREEN)Creating $@...$(NC)"
-	$(AR) rcs $@ $^
+## Compile the final lib object
+$(LIB_FINAL_OBJ): $(LIB_OBJ)
+	@echo -e "$(GREEN)Creating Lib final object $@...$(NC)"
+	$(LD) -r -o $@ $^
 
 ## Compiling the Lib C objects
-$(OBJ_DIR)/$(CLIB_NAME)/%.c.o: $(DIR)/%.c
+$(LIB_OBJ_DIR)/string/%.c.o: $(LIB_SRC_DIR)/string/%.c
 	@echo -e "$(YELLOW)Compiling $@...$(NC)"
 	$(CC) -c $(LIB_FLAGS) $< -o $@
+	$(OBJDUMP) -S $@ > $@.asm
+
+## Compiling the Lib C objects
+$(LIB_OBJ_DIR)/memory/%.c.o: $(LIB_SRC_DIR)/memory/%.c
+	@echo -e "$(YELLOW)Compiling $@...$(NC)"
+	$(CC) -c $(LIB_FLAGS) $< -o $@
+	$(OBJDUMP) -S $@ > $@.asm

@@ -27,7 +27,17 @@ static inline void put_char_in_buffer(char c, uint8_t x, uint8_t y, uint8_t colo
 void cga_putc(char c, uint8_t x, uint8_t y, uint8_t color) {
     if (!cga_buffer)
         return;
-    put_char_in_buffer(c, x * 2, y, color);
+    switch (c) {
+        case '\t':
+        case '\r':
+        case '\n':
+        case 127:
+            put_char_in_buffer(' ', x * 2, y, color);
+            break;
+        default:
+            put_char_in_buffer(c, x * 2, y, color);
+            break;
+    }
 }
 
 /**

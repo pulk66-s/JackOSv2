@@ -11,18 +11,14 @@ DIRS				+= 	$(DIR) $(LIB_DIR) $(DIR)/CGA $(DIR)/serial $(DIR)/console
 ## Kernel Sources
 KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(DIR)/entrypgdir.c			\
-						$(LIB_DIR)/string/strlen.c	\
-						$(LIB_DIR)/string/itoa.c	\
-						$(LIB_DIR)/string/revstr.c	\
-						$(LIB_DIR)/string/format.c	\
-						$(LIB_DIR)/string/strcat.c	\
-						$(LIB_DIR)/memory/memset.c	\
 						$(DIR)/CGA/print.c			\
 						$(DIR)/serial/init.c		\
 						$(DIR)/serial/print.c		\
-						$(DIR)/console/init.c		\
-						$(DIR)/console/print.c		\
-						$(DIR)/console/panic.c		\
+						$(DIR)/serial/input.c		\
+
+## Include sub Makefiles
+include $(DIR)/console/Makefrag
+include $(LIB_DIR)/Makefrag
 
 ## Kernel GAS Sources
 KERNEL_ASOURCES		:=	$(DIR)/entry.S
@@ -38,10 +34,10 @@ KERNEL_CFLAGS		:= 	$(CFLAGS) -pipe -MD -fno-omit-frame-pointer -gstabs -m32 -DJO
 KERNEL_LD_FLAGS		:=	$(LD_FLAGS) -T $(DIR)/kernel.ld -nostdlib
 
 ## Creating the kernel binary
-$(KERNEL_BIN): $(KERNEL_OBJ)
+$(KERNEL_BIN): $(KERNEL_OBJ) $(KCONS_FINAL_OBJ) $(LIB_FINAL_OBJ)
 	@echo -e "$(GREEN)Linking $@...$(NC)"
 	echo "LIB_PATH $(LIB_PATH)"
-	$(LD) -o $@ $(KERN_LD_FLAGS) $(KERNEL_OBJ) -b binary $(KERNEL_BIN)
+	$(LD) -o $@ $(KERN_LD_FLAGS) $^ -b binary $(KERNEL_BIN)
 	$(OBJDUMP) -S $@ > $@.asm
 	$(NM) -n $@ > $@.sym
 

@@ -4,7 +4,7 @@
 #include <include/graphics/CGA.h>
 #include <include/graphics/serial.h>
 
-static struct console_interface serial_interface = {
+static struct console_interface serial_output_interface = {
     .putc = serial_putc,
     .puts = serial_puts,
     .putn = serial_putn,
@@ -12,6 +12,9 @@ static struct console_interface serial_interface = {
     .printf = serial_printf
 };
 
+static struct console_input_interface serial_input_interface = {
+    .getc = serial_getc
+};
 
 /**
  * @brief   End the ELF loading process
@@ -35,7 +38,8 @@ static inline void initialize_kernel(void) {
     if (!serial_init()) {
         cga_puts("Serial port doesn't exist\n", 0, 0, CGA_COLOR(CGA_COLOR_RED, CGA_COLOR_BLACK));
     } else {
-        console_add_interface(&serial_interface);
+        console_add_output_interface(&serial_output_interface);
+        console_set_input_interface(&serial_input_interface);
     }
 }
 
@@ -47,6 +51,8 @@ void i386_init(void)
     end_elf_process();
     initialize_kernel();
     kcons_prints("Welcome to JOS Kernel !!!\n");
-    // kcons_prints("JOS is now running...\n");
-    for (;;);
+    kcons_prints("JOS is now running...\n");
+    while (1) {
+        runcmd();
+    }
 }

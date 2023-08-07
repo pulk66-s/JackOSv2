@@ -26,6 +26,9 @@ static inline void check_newline(void) {
 void kcons_printc(char c) {
     struct console *console = get_console();
 
+    for (int i = 0; i < console->nb_interface; i++) {
+        console->output_interface[i].putc(c, console->x, console->y, console->color);
+    }
     switch (c) {
         case '\n':
             console->x = 0;
@@ -35,13 +38,14 @@ void kcons_printc(char c) {
             console->x = 0;
             break;
         case '\t':
-            for (;;);
             console->x += 4;
             break;
-        default:
-            for (int i = 0; i < console->nb_interface; i++) {
-                console->interface[i].putc(c, console->x, console->y, console->color);
+        case 127:
+            if (console->x > 0) {
+                console->x--;
             }
+            break;
+        default:
             console->x++;
             break;
     }
@@ -69,7 +73,7 @@ void kcons_printn(int n) {
     size_t len = 0;
 
     for (int i = 0; i < console->nb_interface; i++) {
-        console->interface[i].putn(n, console->x, console->y, console->color);
+        console->output_interface[i].putn(n, console->x, console->y, console->color);
     }
     while (n != 0) {
         n /= 10;
@@ -98,6 +102,6 @@ void kcons_printf(const char *fmt, ...) {
     struct console *console = get_console();
 
     for (int i = 0; i < console->nb_interface; i++) {
-        console->interface[i].printf(fmt, console->x, console->y, console->color);
+        console->output_interface[i].printf(fmt, console->x, console->y, console->color);
     }
 }

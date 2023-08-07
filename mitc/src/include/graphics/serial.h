@@ -108,4 +108,10 @@ void serial_printf(
     ...
 );
 
+/**
+ * @brief   Get a char from the serial port
+ * @return  The char
+*/
+char serial_getc();
+
 #endif
