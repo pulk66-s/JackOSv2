@@ -13,6 +13,7 @@
 #include "types.h"
 
 #define MAX_CONSOLE_INTERFACE 10
+#define NB_COMMANDS 2
 
 struct console_interface {
     void (*init)(void);
@@ -36,6 +37,12 @@ struct console {
     uint8_t nb_interface;
     struct console_interface output_interface[MAX_CONSOLE_INTERFACE];
     struct console_input_interface input_interface;
+};
+
+struct Command {
+    const char *name;
+    const char *description;
+    void (*func)(char **argv);
 };
 
 /**
@@ -103,5 +110,23 @@ void console_set_input_interface(struct console_input_interface *inter);
  * @brief           Run the command given by the user
 */
 void runcmd(void);
+
+/**
+ * @brief           Display the help
+ * @param   argv    The arguments
+*/
+void help_cmd(char **argv);
+
+/**
+ * @brief           Display the NVRAM
+ * @param   argv    The arguments
+*/
+void nvram_cmd(char **argv);
+
+/**
+ * @brief           Get all the commands informations
+ * @return          all the commands
+*/
+struct Command *get_commands(void);
 
 #endif

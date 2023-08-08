@@ -9,13 +9,15 @@ KCONS_DIR			:= 	$(KERNEL_DIR)/$(KCONS_FOLDER_NAME)
 KCONS_OBJ_DIR		:=	$(subst $(SRC_DIR), $(OBJ_DIR), $(KCONS_DIR))
 
 ## Add the current dir to the dirs list
-DIRS				+= 	$(KCONS_DIR)
+DIRS				+= 	$(KCONS_DIR) $(KCONS_DIR)/cmds
 
 ## Kernel Console sources
-KCONS_SRC			:=	$(KCONS_DIR)/init.c		\
-						$(KCONS_DIR)/panic.c	\
-						$(KCONS_DIR)/print.c	\
-						$(KCONS_DIR)/runcmd.c	\
+KCONS_SRC			:=	$(KCONS_DIR)/init.c			\
+						$(KCONS_DIR)/panic.c		\
+						$(KCONS_DIR)/print.c		\
+						$(KCONS_DIR)/runcmd.c		\
+						$(KCONS_DIR)/cmds/help.c	\
+						$(KCONS_DIR)/cmds/nvram.c	\
 
 ## Kernel Console main object
 KCONS_FINAL_OBJ		:=	$(KCONS_OBJ_DIR).o
@@ -33,5 +35,11 @@ $(KCONS_FINAL_OBJ): $(KCONS_OBJ)
 ## Compile the kernel console object
 $(KCONS_OBJ_DIR)/%.c.o: $(KCONS_DIR)/%.c
 	@echo -e "$(YELLOW)Compiling Kernel Console $@...$(NC)"
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+	$(OBJDUMP) -S $@ > $@.asm
+
+## Compile the kernel console commands object
+$(KCONS_OBJ_DIR)/cmds/%.c.o: $(KCONS_DIR)/cmds/%.c
+	@echo -e "$(YELLOW)Compiling Kernel Console cmd $@...$(NC)"
 	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
 	$(OBJDUMP) -S $@ > $@.asm

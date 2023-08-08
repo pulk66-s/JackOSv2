@@ -11,29 +11,21 @@
 char buff[MAX_BUFFER];
 char prompt[] = "KJOS> ";
 
-struct Command {
-    const char *name;
-    const char *description;
-    void (*func)(char **argv);
-};
-
-#define NB_COMMANDS 1
-
 void help_cmd(char **argv);
 
-struct Command cmds[NB_COMMANDS] = {
-    { "help", "Display this list of commands",  help_cmd}
+static struct Command cmds[NB_COMMANDS] = {
+    { "help", "Display this list of commands",  help_cmd},
+    { "nvram", "Display the NVRAM informations",  nvram_cmd},
 };
 
-void help_cmd(char **argv) {
-    kcons_prints("Available commands:\n");
-    for (size_t i = 0; i < NB_COMMANDS; i++) {
-        kcons_prints(cmds[i].name);
-        kcons_prints("\t\t");
-        kcons_prints(cmds[i].description);
-        kcons_prints("\n");
-    }
+/**
+ * @brief           Get all the commands informations
+ * @return          all the commands
+*/
+struct Command *get_commands(void) {
+    return cmds;
 }
+
 
 /**
  * @brief           Get the line from the user

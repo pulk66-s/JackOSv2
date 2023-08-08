@@ -3,6 +3,7 @@
 #include <include/console.h>
 #include <include/graphics/CGA.h>
 #include <include/graphics/serial.h>
+#include <include/mem.h>
 
 static struct console_interface serial_output_interface = {
     .putc = serial_putc,
@@ -50,6 +51,7 @@ void i386_init(void)
 {
     end_elf_process();
     initialize_kernel();
+    mem_init();
     kcons_prints("Welcome to JOS Kernel !!!\n");
     kcons_prints("JOS is now running...\n");
     while (1) {

@@ -17,6 +17,7 @@ KERNEL_CSOURCES		:=	$(DIR)/main.c				\
 						$(DIR)/serial/input.c		\
 
 ## Include sub Makefiles
+include $(DIR)/mem/Makefrag
 include $(DIR)/console/Makefrag
 include $(LIB_DIR)/Makefrag
 
@@ -34,7 +35,7 @@ KERNEL_CFLAGS		:= 	$(CFLAGS) -pipe -MD -fno-omit-frame-pointer -gstabs -m32 -DJO
 KERNEL_LD_FLAGS		:=	$(LD_FLAGS) -T $(DIR)/kernel.ld -nostdlib
 
 ## Creating the kernel binary
-$(KERNEL_BIN): $(KERNEL_OBJ) $(KCONS_FINAL_OBJ) $(LIB_FINAL_OBJ)
+$(KERNEL_BIN): $(KERNEL_OBJ) $(KCONS_FINAL_OBJ) $(LIB_FINAL_OBJ) $(KMEM_FINAL_OBJ)
 	@echo -e "$(GREEN)Linking $@...$(NC)"
 	echo "LIB_PATH $(LIB_PATH)"
 	$(LD) -o $@ $(KERN_LD_FLAGS) $^ -b binary $(KERNEL_BIN)

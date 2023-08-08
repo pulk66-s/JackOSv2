@@ -1,0 +1,31 @@
+##
+## This Makefrag compiles the kernel memory fragment of the MIT C version of Jackos
+##
+
+## Curr Dir
+KMEM_DIR		:=	$(KERNEL_DIR)/mem
+KMEM_OBJ_DIR	:=	$(subst $(SRC_DIR),$(OBJ_DIR),$(KMEM_DIR))
+
+## Add dir to all dirs
+DIRS			+=	$(KMEM_OBJ_DIR)
+
+## Kernel memory sources
+KMEM_SRC		:=	$(KMEM_DIR)/nvram.c		\
+					$(KMEM_DIR)/init.c		\
+
+## Kernel memory objects
+KMEM_OBJ		:=	$(KMEM_SRC:.c=.c.o)
+KMEM_OBJ		:=	$(subst $(SRC_DIR),$(OBJ_DIR),$(KMEM_OBJ))
+KMEM_FINAL_OBJ	:=	$(KMEM_OBJ_DIR).o
+
+## Compile the kernel memory main object
+$(KMEM_FINAL_OBJ): $(KMEM_OBJ)
+	@echo -e "$(GREEN)Linking $@...$(NC)"
+	$(LD) -r -o $@ $(KMEM_OBJ)
+	$(OBJDUMP) -S $@ > $@.asm
+
+## Compile the kernel memory object
+$(KMEM_OBJ_DIR)/%.c.o: $(KMEM_DIR)/%.c
+	@echo -e "$(YELLOW)Compiling Kernel Memory $@...$(NC)"
+	$(CC) $(KERNEL_CFLAGS) -c $< -o $@
+	$(OBJDUMP) -S $@ > $@.asm
