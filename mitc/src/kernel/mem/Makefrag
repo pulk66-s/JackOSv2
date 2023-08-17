@@ -12,6 +12,8 @@ DIRS			+=	$(KMEM_OBJ_DIR)
 ## Kernel memory sources
 KMEM_SRC		:=	$(KMEM_DIR)/nvram.c		\
 					$(KMEM_DIR)/init.c		\
+					$(KMEM_DIR)/boot.c		\
+					$(KMEM_DIR)/paging.c	\
 
 ## Kernel memory objects
 KMEM_OBJ		:=	$(KMEM_SRC:.c=.c.o)

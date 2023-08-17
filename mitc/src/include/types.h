@@ -9,6 +9,8 @@
 #ifndef __JOS_INCLUDE_TYPES_h__
 #define __JOS_INCLUDE_TYPES_h__
 
+#define ROUNDUP(a, sz)  (((uintptr_t)(a) + (sz) - 1) & ~((sz) - 1))
+
 typedef char                int8_t;
 typedef short               int16_t;
 typedef int                 int32_t;

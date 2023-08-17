@@ -4,6 +4,7 @@
 #include <include/graphics/CGA.h>
 #include <include/graphics/serial.h>
 #include <include/mem.h>
+#include <include/mmu.h>
 
 static struct console_interface serial_output_interface = {
     .putc = serial_putc,

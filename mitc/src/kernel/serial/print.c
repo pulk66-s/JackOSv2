@@ -77,11 +77,9 @@ void serial_clear() {
  * TODO: Implement the printf function for the serial port
 */
 void serial_printf(
-    const char *fmt,
+    __attribute__((unused)) const char *fmt,
     __attribute__((unused)) uint8_t x,
     __attribute__((unused)) uint8_t y,
     __attribute__((unused)) serial_color_t color,
     ...
-) {
-    
-}
+) {}

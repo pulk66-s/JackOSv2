@@ -24,7 +24,7 @@ pde_t entry_pgdir[NB_PAGE_DIRECTORY_ENTRIES_PER_PAGE] = {
 	[0]
 		= ((uintptr_t)entry_pgtable - KERNEL_BASE) + PTE_P,
 	// Map VA's [KERNEL_BASE, KERNEL_BASE+4MB) to PA's [0, 4MB)
-	[KERNEL_BASE>>PDXSHIFT]
+	[KERNEL_BASE >> PAGE_DIRECTORY_INDEX_SHIFT]
 		= ((uintptr_t)entry_pgtable - KERNEL_BASE) + PTE_P + PTE_W
 };
 

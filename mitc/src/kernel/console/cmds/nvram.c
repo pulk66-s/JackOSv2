@@ -14,7 +14,7 @@
  * @brief           Display the NVRAM
  * @param   argv    The arguments
 */
-void nvram_cmd(char **argv) {
+void nvram_cmd(__attribute__((unused)) char **argv) {
     struct nvram_info *nvram = nvram_get_info();
 
     kcons_printf("NVRAM informations:\n");

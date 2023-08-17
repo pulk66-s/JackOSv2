@@ -13,8 +13,8 @@
  * @brief   Display the help
  * @param   argv    The arguments
 */
-void help_cmd(char **argv) {
-    struct Command *cmds = get_commands();
+void help_cmd(__attribute__((unused)) char **argv) {
+    struct command *cmds = get_commands();
 
     kcons_prints("Available commands:\n");
     for (size_t i = 0; i < NB_COMMANDS; i++) {

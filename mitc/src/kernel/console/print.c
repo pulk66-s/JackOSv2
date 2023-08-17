@@ -57,8 +57,6 @@ void kcons_printc(char c) {
  * @param   str The string to print
 */
 void kcons_prints(const char *str) {
-    struct console *console = get_console();
-
     for (int i = 0; str[i]; i++) {
         kcons_printc(str[i]);
     }

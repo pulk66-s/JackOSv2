@@ -100,11 +100,10 @@ void cga_clear() {
  * ! This function is not implemented yet, waiting for format_string function
  * ! implementation
 */
-void cga_printf(const char *fmt, uint8_t x, uint8_t y, uint8_t color, ...) {
-    va_list args;
-    va_start(args, color);
-    // const char *buff = format_string(fmt, args);
-
-    // cga_puts(buff, x, y, color);
-    va_end(args);
-}
+void cga_printf(
+    __attribute__((unused)) const char *fmt,
+    __attribute__((unused)) uint8_t x,
+    __attribute__((unused)) uint8_t y,
+    __attribute__((unused)) uint8_t color,
+    ...
+) {}

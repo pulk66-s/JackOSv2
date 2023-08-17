@@ -48,7 +48,7 @@ NM					:=	$(HOME)/cc/bin/i686-elf-nm
 AR					:=	ar
 
 ## Flags
-CFLAGS				:=	-W -Wall -Wextra -Wno-unused -Wno-format -Werror -nostdinc -O1 -fno-builtin -fno-stack-protector -I$(SRC_DIR)
+CFLAGS				:=	-W -Wall -Wextra -nostdinc -O1 -fno-builtin -fno-stack-protector -I$(SRC_DIR)
 ASFLAGS				:=
 QEMU_FLAGS			:= 	-serial mon:stdio
 LD_FLAGS			:=	-m elf_i386

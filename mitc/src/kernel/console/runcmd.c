@@ -13,7 +13,7 @@ char prompt[] = "KJOS> ";
 
 void help_cmd(char **argv);
 
-static struct Command cmds[NB_COMMANDS] = {
+static struct command cmds[NB_COMMANDS] = {
     { "help", "Display this list of commands",  help_cmd},
     { "nvram", "Display the NVRAM informations",  nvram_cmd},
 };
@@ -22,7 +22,7 @@ static struct Command cmds[NB_COMMANDS] = {
  * @brief           Get all the commands informations
  * @return          all the commands
 */
-struct Command *get_commands(void) {
+struct command *get_commands(void) {
     return cmds;
 }
 
@@ -68,7 +68,6 @@ static void parsecmd(char *cmd) {
 */
 void runcmd(void) {
     struct console *console = get_console();
-    char c;
 
     if (!console->input_interface.getc) {
         panic("No input interface");

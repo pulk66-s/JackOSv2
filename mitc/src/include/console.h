@@ -39,7 +39,7 @@ struct console {
     struct console_input_interface input_interface;
 };
 
-struct Command {
+struct command {
     const char *name;
     const char *description;
     void (*func)(char **argv);
@@ -127,6 +127,6 @@ void nvram_cmd(char **argv);
  * @brief           Get all the commands informations
  * @return          all the commands
 */
-struct Command *get_commands(void);
+struct command *get_commands(void);
 
 #endif

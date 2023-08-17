@@ -47,8 +47,21 @@ uint32_t mc146818_read(uint32_t reg);
  * @brief           get the nvram informations
  * @param    info   The nvram_info struct to fill
  * @return          The nvram_info struct filled
+ * 
+ * @warning
  * ! You need to call the "mem_init" function before calling this function
 */
 struct nvram_info *nvram_get_info(void);
+
+/**
+ * @brief           Init the nvram structure
+*/
+void nvram_init(void);
+
+/**
+ * @brief           Get the amount of pages in the nvram
+ * @return          The amount of pages in the nvram
+*/
+size_t get_nvram_nbpages(void);
 
 #endif

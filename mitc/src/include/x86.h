@@ -50,4 +50,26 @@ static inline void insl(int port, void *addr, int cnt)
                  : "memory", "cc");
 }
 
+static inline void lcr3(uint32_t val)
+{
+    asm volatile("movl %0,%%cr3"
+                 :
+                 : "r"(val));
+}
+
+static inline void lcr0(uint32_t val)
+{
+    asm volatile("movl %0,%%cr0"
+                 :
+                 : "r"(val));
+}
+
+static inline uint32_t rcr0(void)
+{
+    uint32_t val;
+    asm volatile("movl %%cr0,%0"
+                 : "=r"(val));
+    return val;
+}
+
 #endif

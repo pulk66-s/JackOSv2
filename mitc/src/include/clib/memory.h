@@ -17,6 +17,6 @@
  * @param   value   The value to set
  * @param   size    The size of the block of memory
 */
-void memset(void *ptr, uint8_t value, size_t size);
+void *memset(void *v, int c, size_t n);
 
 #endif
