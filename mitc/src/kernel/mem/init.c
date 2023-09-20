@@ -14,7 +14,7 @@
 #include <include/clib/memory.h>
 #include <include/x86.h>
 
-static pde_t *kern_page_dir;
+pde_t *kern_page_dir;
 static size_t nb_pages;
 extern char bootstacktop[], bootstack[];
 
@@ -47,7 +47,7 @@ void mem_init(void) {
 	// Init the pagination system
 	pagination_init(get_nvram_nbpages());
 
-	check_page_free_list(1);
+	// check_page_free_list(1);
 	// check_page_alloc();
 	// check_page();
 
@@ -62,6 +62,9 @@ void mem_init(void) {
 	page_map_region(kern_page_dir, UPAGES, PAGE_TABLE_SIZE, PHYS_ADDR(get_all_pages()), PTE_P | PTE_U);
 	page_map_region(kern_page_dir, KSTACKTOP - KSTKSIZE, KSTKSIZE, PHYS_ADDR(bootstack), PTE_W | PTE_P);
 	page_map_region(kern_page_dir, KERNEL_BASE, 0xffffffff - KERNEL_BASE, 0, PTE_W | PTE_P);
+
+
+	// check_kern_pgdir();
 	lcr3(PHYS_ADDR(kern_page_dir));
 
 	cr0 = rcr0();

@@ -1,0 +1,22 @@
+##
+## Compile everything concerning the kernel
+## This Makefile can't be called directly, it must be included by another Makefile
+## it's included by the ../Makefile
+##
+## @author: pulk66-s
+## last update: 2023.09.20
+##
+
+# Include the configuration makefile
+include ../mk/config.mk
+
+# Add the current directory to the build dirs, it's starting from the src/ folder
+BUILD_DIRS			+=	kernel
+
+# By default it's building the kernel
+all: build_kernel
+
+# Building the kernel binary
+build_kernel:
+	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel ${NC}"
+	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel done${NC}"

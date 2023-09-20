@@ -15,6 +15,8 @@
 #define MAX_CONSOLE_INTERFACE 10
 #define NB_COMMANDS 2
 
+#define panic(str) _panic(str, __FILE__, __LINE__)
+
 struct console_interface {
     void (*init)(void);
     void (*putc)(char c, uint8_t x, uint8_t y, uint8_t color);
@@ -92,7 +94,7 @@ void kcons_printf(const char *fmt, ...);
  * @brief       Panic function, it print a message and then halt the system
  * @param   str The message to print
 */
-void panic(const char *str);
+void _panic(const char *str, const char *file, size_t line);
 
 /**
  * @brief           Add a console interface to the console

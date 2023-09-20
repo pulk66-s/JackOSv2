@@ -18,7 +18,7 @@
  * @brief       Allocation flags
 */
 enum allocation_flags {
-    ALLOC_ZERO = 0
+    ALLOC_ZERO = 1
 };
 
 extern size_t nb_total_pages;

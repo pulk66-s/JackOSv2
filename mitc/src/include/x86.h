@@ -72,4 +72,12 @@ static inline uint32_t rcr0(void)
     return val;
 }
 
+static inline void invlpg(void *addr)
+{
+    asm volatile("invlpg (%0)"
+                 :
+                 : "r"(addr)
+                 : "memory");
+}
+
 #endif

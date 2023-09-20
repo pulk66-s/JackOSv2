@@ -10,6 +10,7 @@
 #include <include/mem.h>
 #include <include/console.h>
 #include <include/mmu.h>
+#include <include/types.h>
 
 /**
  * @brief           Allocate size bytes of physical memory, returning a pointer
@@ -25,14 +26,17 @@
  * ! paging system is implemented, you must use the "page_alloc" function.
 */
 void *boot_alloc(size_t size) {
-    // first address after kernel loaded from ELF file. It's a symbol given by the linker
-    extern char end[];
+	static char *nextfree;	// virtual address of next byte of free memory
+	char *result;
 
-    static char *last_addr = end;
-    char *res;
-
-    size = ROUNDUP(size, PAGE_SIZE);
-    res = last_addr;
-    last_addr += size;
-    return res;
+	if (!nextfree) {
+		extern char end[];
+		nextfree = ROUNDUP((char *) end, PAGE_SIZE);
+	}
+	if ((uint32_t)nextfree + size >= KERNEL_BASE + 0xFc00000) {
+		panic("boot_alloc: out of memory\n");
+	}
+	result = nextfree;
+	nextfree += ROUNDUP(size, PAGE_SIZE);
+	return result;
 }
