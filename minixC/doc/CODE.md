@@ -4,6 +4,7 @@
 
 - [Introduction](#introduction)
 - [Makefile](#makefile)
+- [Folder description](#folder-description)
 
 ## Introduction <a name="introduction"></a>
 
@@ -46,3 +47,15 @@ The `mk/` folder contains all the configurations files.
 
 - `make`: default rule: Build all the OS
 - `make os_build`: Build all the OS
+
+---
+## Folder description <a name="folder-description"></a>
+
+This is explaining the rules of every folder in the project
+
+- `/`: Root of the project
+    - [`src`](code/README.md): Source code of the project
+        - [`boot`](code/boot.md): Source code of the bootloader
+        - [`kernel`](code/kernel.md): Source code of the kernel
+    - `mk`: Makefile configuration files
+    - `bin`: Generated binary files
