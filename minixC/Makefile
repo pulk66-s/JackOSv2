@@ -16,3 +16,20 @@ build_everything:
 	@echo -e "${GREEN}Building everything${NC}"
 	@make -C src/ all
 	@echo -e "${GREEN}Building everything done${NC}"
+
+# Cleaning the whole project
+clean:
+	@echo -e "${GREEN}Cleaning everything${NC}"
+	rm -rf $(BIN_DIR)/*
+	@make -C src/ clean
+	@echo -e "${GREEN}Cleaning everything done${NC}"
+
+# Rebuilding the whole project
+re: clean all
+
+# Run the project with default software
+run: run_qemu
+
+# Run the project with qemu
+run_qemu:
+	$(QEMU) $(QEMU_FLAGS) $(KERNEL_IMG)
