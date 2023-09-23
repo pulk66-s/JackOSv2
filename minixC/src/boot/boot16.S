@@ -6,7 +6,6 @@
 # last modified: 2023.09.20 
 #
 
-
 # This is the first label executed, it's the entry point of the system.
 # Actually we are in the real mode, so we need to use the 16 bit code.
 .globl _start
@@ -33,11 +32,7 @@ _start:
     cmp $1, %ax
     jne _enable_fails
 
-    call switch_to_32
-
-    mov $0x4F, %al
-    call _print_char
-    jmp inf_loop
+    jmp switch_to_32
 
 _enable_succeed:
     mov $0x59, %al
@@ -52,9 +47,9 @@ _enable_fails:
 inf_loop:
     jmp inf_loop
 
+.include "boot/switch32.S"
 .include "boot/a20.S"
 .include "boot/print.S"
-.include "boot/switch32.S"
 
 _print_char:
     movb $0x0e, %ah

@@ -6,6 +6,8 @@
 #ifndef __JL_BOOT_H__
 #define __JL_BOOT_H__
 
+#include "mem.h"
+
 // Defined in boot/a20.S
 extern void enable_a20(void);
 extern int check_a20(void);
