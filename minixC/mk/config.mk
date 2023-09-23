@@ -33,8 +33,8 @@ YELLOW	:=	\033[0;33m
 #######################
 
 BIN_FOLDER	:=	~/cc/bin
-AS			:=	${BIN_FOLDER}/i686-elf-as
 CC			:=	${BIN_FOLDER}/i686-elf-gcc
+AS			:=	${CC}
 LD			:=	${BIN_FOLDER}/i686-elf-ld
 OBJDUMP		:=	${BIN_FOLDER}/i686-elf-objdump
 OBJCOPY		:=	${BIN_FOLDER}/i686-elf-objcopy
@@ -42,7 +42,8 @@ QEMU		:=	qemu-system-i386
 PYTHON		:=	python3
 
 # Flags
-ASFLAGS		:=
-CFLAGS		:=
-LDFLAGS		:=	-m elf_i386
-QEMU_FLAGS	:=	-serial mon:stdio
+INCLUDES_FLAGS	:=	-I${RELATIVE_ROOT_PATH}/include
+CFLAGS			:=	${INCLUDES_FLAGS} -W -Wall -Wextra -nostdinc -O1 -fno-builtin -fno-stack-protector -pipe -MD -fno-omit-frame-pointer -gstabs -m32 -DJOS_KERNEL
+ASFLAGS			:=	${CFLAGS}
+LDFLAGS			:=	-m elf_i386
+QEMU_FLAGS		:=	-serial mon:stdio

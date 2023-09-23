@@ -6,6 +6,7 @@
 # last modified: 2023.09.20 
 #
 
+
 # This is the first label executed, it's the entry point of the system.
 # Actually we are in the real mode, so we need to use the 16 bit code.
 .globl _start
@@ -22,14 +23,20 @@ _start:
     movw %ax,%es
     movw %ax,%ss
 
-    # Go to the next step -> Enable A20
-    call enableA20
+    mov $0x53, %al
+    call _print_char
+
+    call enable_a20
     jc _enable_fails
 
     call check_a20
     cmp $1, %ax
-    je _enable_succeedb
-    jmp _enable_fails
+    jne _enable_fails
+
+    call switch_to_32
+
+    mov $0x4F, %al
+    call _print_char
     jmp inf_loop
 
 _enable_succeed:
@@ -46,6 +53,8 @@ inf_loop:
     jmp inf_loop
 
 .include "boot/a20.S"
+.include "boot/print.S"
+.include "boot/switch32.S"
 
 _print_char:
     movb $0x0e, %ah

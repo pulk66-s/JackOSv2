@@ -7,7 +7,8 @@
 
 # Purpose: to enable the A20 line
 # Returns: cf - set on error
-enableA20:
+.global enable_a20
+enable_a20:
     clc         # Clear the carry flag
     pusha       # Save all registers
     mov $0, %bh # bh = 0
@@ -155,13 +156,13 @@ _wait_io2:
     jnz _wait_io1
     ret
 
-
 # Purpose: to check the status of the a20 line in a completely self-contained state-preserving way.
 #          The function can be modified as necessary by removing push's at the beginning and their
 #          respective pop's at the end if complete self-containment is not required.
 #
 # Returns: 0 in ax if the a20 line is disabled (memory wraps around)
 #          1 in ax if the a20 line is enabled (memory does not wrap around)
+.global check_a20
 check_a20:
     # save the state of the registers
 

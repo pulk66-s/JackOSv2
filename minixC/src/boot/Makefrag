@@ -17,6 +17,9 @@ BUILD_DIRS		+=	${FOLDER_NAME}
 # Boot ASM Sources
 BOOT_ASM_SRC	:=	boot/boot16.S
 
+# Boot C Sources
+BOOT_C_SRC		:=	boot/start.c
+
 # Boot binary
 BOOT_BIN		:=	boot.bin
 
@@ -24,23 +27,33 @@ BOOT_BIN		:=	boot.bin
 BINARIES		+=	${BOOT_BIN}
 
 # Boot Object
-BOOT_OBJ		:=	$(addprefix ${BIN_DIR}/, ${BOOT_ASM_SRC:.S=.S.o})
+BOOT_OBJ		:=	$(addprefix ${BIN_DIR}/, ${BOOT_ASM_SRC:.S=.S.o}) \
+					$(addprefix ${BIN_DIR}/, ${BOOT_C_SRC:.c=.c.o})
 
 # Building the boot binary
 ${BOOT_BIN}: ${BOOT_OBJ}
 	@echo -e "${YELLOW} Linking $@ ${NC}"
-	${LD} ${LDFLAGS} ${BOOT_OBJ} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out
+	${LD} ${BOOT_OBJ} ${LDFLAGS} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out
 
 # Extracting the binary from the object file
 	${OBJCOPY} -O binary ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out ${BIN_DIR}/$@
+# For debugging
+	${OBJDUMP} -S ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out > ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out.asm
 
 # Sign the binary
 	@echo -e "${YELLOW} Signing $@ ${NC}"
 	${PYTHON} ./boot/sign.py ${BIN_DIR}/${BOOT_BIN}
 
+# Building all the boot .S files
 ${BIN_DIR}/${FOLDER_NAME}/%.S.o: ${FOLDER_NAME}/%.S
 	@echo -e "${YELLOW} Compiling $< ${NC}"
-	${AS} ${ASFLAGS} $< -o $@
-
+	${AS} -c ${ASFLAGS} $< -o $@
 # For debugging
 	${OBJDUMP} -S $@ > ${BIN_DIR}/${FOLDER_NAME}/$*.S.asm
+
+# Building all the boot .c files
+${BIN_DIR}/${FOLDER_NAME}/%.c.o: ${FOLDER_NAME}/%.c
+	@echo -e "${YELLOW} Compiling $< ${NC}"
+	${CC} -c ${CFLAGS} $< -o $@
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/${FOLDER_NAME}/$*.c.asm
