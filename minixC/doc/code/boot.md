@@ -12,6 +12,8 @@ This file explains the theory and the implementations behind the bootloader.
     - [Boot sequence](#boot-sequence)
     - [The boot sector](#boot-sector)
     - [Bios code](#bios-code)
+    - [Memory map](#memory-map)
+    - [Load the kernel](#load-the-kernel)
 - [Code implementation](#code)
 
 ## Theory <a name="theory"></a>
@@ -87,6 +89,26 @@ in $0x92, %al
 or $0x02, %al
 out %al, $0x92
 ```
+
+### Memory map <a name="memory-map"></a>
+
+When we are booting on a computer the BIOS is setting up the first memory disk sector in a particular computer sector. This first sector is named the [boot sector](#the-boot-sector). Thus when we are booting we only have 512 bytes to deal with to do our boot loading stuff and load the kernel in memory. The BIOS know we are running an operating system by looking for the magical bytes. It's two bytes in the 510 and 511 bytes of the boot sector. The magical bytes are `0xAA55`. The BIOS is loading our boot sector at the same address: `0x7c00`, so we have 512 bytes starting at `0x7c00` to `0x7dff`. The BIOS is also setting the stack pointer to `0x7c00`.
+
+To resume, this is the memory map when we are booting:
+```
++------------------+ <- 0x00000000
+|    BIOS STUFF    | Actually there is a lot of stuff here, but we don't care for now
++------------------+ <- 0x7c00
+|       Code       |
+|                  |
+|       0xAA       | <- 0x7dfe
+|       0x55       | <- 0x7dff
++------------------+
+```
+
+In this sector we need to load the kernel at an upper address like `0x10000`. we are setting it this far to permit the kernel stack to grow up without problem. If so the kernel stack will have $0\text{x}10000-0\text{x}7dff = 65536-32255 = 33281$ bytes, a total of 32 Kilobytes
+
+### Load the kernel <a name="load-the-kernel"></a>
 
 ## Code implementation <a name="code"></a>
 
