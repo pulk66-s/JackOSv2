@@ -15,7 +15,7 @@ This file contains the explanation of the JackOS iso file, with the schema of th
 ```
 +-------------+ <- 0x00, (C, H, S) = (0, 0, 0)
 | BOOT Loader |
-+-------------+ <- 0x400, (C, H, S) = (0, 0, 3)
++-------------+ <- 0x400, (C, H, S) = (0, 0, 4)
 | Kernel Code |
 +-------------+
 ```
