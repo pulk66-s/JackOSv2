@@ -35,14 +35,14 @@ static void print_str(char *str, int x, int y)
 */
 void read_kernel(void *addr)
 {
-    read_sector((void *)KERNEL_START, CHS_TO_LBA(0, 0, 3));
+    read_sector(addr, CHS_TO_LBA(0, 0, 3));
 }
 
 void start_boot(void)
 {
     print_str("START", 0, 0);
     read_kernel((void *)KERNEL_START);
-    if (is_elf(KERNEL_START)) {
+    if (is_elf((void *)KERNEL_START)) {
         print_str("KERNEL IS ELF", 0, 1);
     } else {
         print_str("KERNEL IS NOT ELF", 0, 1);
