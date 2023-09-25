@@ -110,12 +110,21 @@ In this sector we need to load the kernel at an upper address like `0x10000`. we
 
 ### Load the kernel <a name="load-the-kernel"></a>
 
+Once we are in protected mode we need to load the kernel at un upper address (let's say 0x10000). The kernel is stored in an ELF file so you need to know how the ELF is working.
+Here is [our tutorial](elf.md) about the ELF file.
+You will also need to know how the disk image is structured, [here is the explanation](josDisk.md).
+
+In protected mode we can't use the BIOS with the interrupts because it's not existing anymore. We need to use something called the PIC (Programmable Interrupt Controller). There is some procedure to do to use the PIC, you can find them [here](pic.md). You will need to use the PIC to:
+- Wait for the disk to be ready
+- Read the disk
+
+
 ## Code implementation <a name="code"></a>
 
 The bootloader is written in C and assembly, the source code is in the `src/boot` directory.
 
 Here is the actual file architecture of the bootloader:
-```
+```²
 - src/boot
     - boot16.S
     - main.c

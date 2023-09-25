@@ -8,5 +8,6 @@
 #define __JL_MEM_H__
 
 #include "mem/gdt.h"
+#include "mem/mmu.h"
 
 #endif

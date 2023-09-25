@@ -11,49 +11,53 @@
 include ../mk/config.mk
 
 # Add the current directory to the build dirs, it's starting from the src/ folder
-FOLDER_NAME		:=	boot
-BUILD_DIRS		+=	${FOLDER_NAME}
+BOOT_FOLDER_NAME	:=	boot
+BUILD_DIRS			+=	${BOOT_FOLDER_NAME}
 
 # Boot ASM Sources
-BOOT_ASM_SRC	:=	boot/boot16.S
+BOOT_ASM_SRC		:=	${BOOT_FOLDER_NAME}/boot16.S
 
 # Boot C Sources
-BOOT_C_SRC		:=	boot/start.c
+BOOT_C_SRC			:=	${BOOT_FOLDER_NAME}/start.c	\
+						${BOOT_FOLDER_NAME}/disk.c
 
 # Boot binary
-BOOT_BIN		:=	boot.bin
+BOOT_BIN			:=	boot.bin
 
 # Adding binary to the list of binaries to build
-BINARIES		+=	${BOOT_BIN}
+BINARIES			+=	${BOOT_BIN}
 
 # Boot Object
-BOOT_OBJ		:=	$(addprefix ${BIN_DIR}/, ${BOOT_ASM_SRC:.S=.S.o}) \
-					$(addprefix ${BIN_DIR}/, ${BOOT_C_SRC:.c=.c.o})
+BOOT_OBJ			:=	$(addprefix ${BIN_DIR}/, ${BOOT_ASM_SRC:.S=.S.o}) \
+						$(addprefix ${BIN_DIR}/, ${BOOT_C_SRC:.c=.c.o})
 
 # Building the boot binary
 ${BOOT_BIN}: ${BOOT_OBJ}
 	@echo -e "${YELLOW} Linking $@ ${NC}"
-	${LD} ${BOOT_OBJ} ${LDFLAGS} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out
+	${LD} ${BOOT_OBJ} ${LDFLAGS} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out
 
 # Extracting the binary from the object file
-	${OBJCOPY} -O binary ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out ${BIN_DIR}/$@
+	${OBJCOPY} -O binary ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out ${BIN_DIR}/$@
 # For debugging
-	${OBJDUMP} -S ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out > ${BIN_DIR}/${FOLDER_NAME}/${BOOT_BIN}.out.asm
+	${OBJDUMP} -S ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out > ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out.asm
 
 # Sign the binary
 	@echo -e "${YELLOW} Signing $@ ${NC}"
 	${PYTHON} ./boot/sign.py ${BIN_DIR}/${BOOT_BIN}
+	${PYTHON} ./boot/fill.py ${BIN_DIR}/${BOOT_BIN}
 
 # Building all the boot .S files
-${BIN_DIR}/${FOLDER_NAME}/%.S.o: ${FOLDER_NAME}/%.S
+${BIN_DIR}/${BOOT_FOLDER_NAME}/%.S.o: ${BOOT_FOLDER_NAME}/%.S
 	@echo -e "${YELLOW} Compiling $< ${NC}"
 	${AS} -c ${ASFLAGS} $< -o $@
 # For debugging
-	${OBJDUMP} -S $@ > ${BIN_DIR}/${FOLDER_NAME}/$*.S.asm
+	${OBJDUMP} -S $@ > ${BIN_DIR}/${BOOT_FOLDER_NAME}/$*.S.asm
+# Fill with dd until the size is a multiple of 512
+	dd if=/dev/zero of=${BIN_DIR}/${BOOT_FOLDER_NAME}/$*.S.o bs=1 count=1 seek=510 conv=notrunc
 
 # Building all the boot .c files
-${BIN_DIR}/${FOLDER_NAME}/%.c.o: ${FOLDER_NAME}/%.c
+${BIN_DIR}/${BOOT_FOLDER_NAME}/%.c.o: ${BOOT_FOLDER_NAME}/%.c
 	@echo -e "${YELLOW} Compiling $< ${NC}"
 	${CC} -c ${CFLAGS} $< -o $@
 # For debugging
-	${OBJDUMP} -S $@ > ${BIN_DIR}/${FOLDER_NAME}/$*.c.asm
+	${OBJDUMP} -S $@ > ${BIN_DIR}/${BOOT_FOLDER_NAME}/$*.c.asm

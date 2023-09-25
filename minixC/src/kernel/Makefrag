@@ -11,12 +11,37 @@
 include ../mk/config.mk
 
 # Add the current directory to the build dirs, it's starting from the src/ folder
-BUILD_DIRS			+=	kernel
+KERNEL_FOLDER_NAME	:=	kernel
+BUILD_DIRS			+=	${KERNEL_FOLDER_NAME}
+
+# Add the kernel ELF binary to the binaries to build
+KERNEL_BIN_NAME		:=	kernel.elf
+BINARIES			+=	${KERNEL_BIN_NAME}
+
+# Kernel C Sources
+KERNEL_C_SOURCES	+=	${KERNEL_FOLDER_NAME}/main.c
+
+# Kernel Objects
+KERNEL_OBJS			:=	${addprefix ${BIN_DIR}/, ${KERNEL_C_SOURCES:.c=.c.o}}
 
 # By default it's building the kernel
 all: build_kernel
 
 # Building the kernel binary
-build_kernel:
-	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel ${NC}"
+build_kernel: ${KERNEL_BIN_NAME}
 	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel done${NC}"
+
+# Building the kernel binary
+${KERNEL_BIN_NAME}: ${KERNEL_OBJS}
+	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel ${NC}"
+	${LD} ${LDFLAGS} -T kernel/kernel.ld -o ${BIN_DIR}/${KERNEL_BIN_NAME} ${KERNEL_OBJS} 
+# For debugging
+	${OBJCOPY} -O binary ${BIN_DIR}/${KERNEL_BIN_NAME} ${BIN_DIR}/${KERNEL_FOLDER_NAME}/${KERNEL_BIN_NAME}.bin
+	${OBJDUMP} -S ${BIN_DIR}/${KERNEL_BIN_NAME} > ${BIN_DIR}/${KERNEL_FOLDER_NAME}/${KERNEL_BIN_NAME}.asm
+
+# Building the Kernel sources
+${BIN_DIR}/${KERNEL_FOLDER_NAME}/%.c.o: ${KERNEL_FOLDER_NAME}/%.c
+	@echo -e "${YELLOW} Compiling $< ${NC}"
+	${CC} -c ${CFLAGS} $< -o $@
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/${KERNEL_FOLDER_NAME}/$*.c.asm

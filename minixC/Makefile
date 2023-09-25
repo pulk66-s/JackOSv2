@@ -14,14 +14,14 @@ all: build_everything
 # Build everything in the project
 build_everything:
 	@echo -e "${GREEN}Building everything${NC}"
-	@make -C src/ all
+	@make -C src
 	@echo -e "${GREEN}Building everything done${NC}"
 
 # Cleaning the whole project
 clean:
 	@echo -e "${GREEN}Cleaning everything${NC}"
 	rm -rf $(BIN_DIR)/*
-	@make -C src/ clean
+	@make -C src clean
 	@echo -e "${GREEN}Cleaning everything done${NC}"
 
 # Rebuilding the whole project

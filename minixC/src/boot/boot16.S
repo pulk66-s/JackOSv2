@@ -28,6 +28,11 @@ _start:
     call enable_a20
     jc _enable_fails
 
+    call read_sector_16
+
+    mov $0x53, %al
+    call _print_char
+
     call check_a20
     cmp $1, %ax
     jne _enable_fails
@@ -47,6 +52,7 @@ _enable_fails:
 inf_loop:
     jmp inf_loop
 
+.include "boot/read_sector.S"
 .include "boot/switch32.S"
 .include "boot/a20.S"
 .include "boot/print.S"
@@ -56,3 +62,8 @@ _print_char:
     movb $0x00, %bh
     int $0x10
     ret
+
+
+# Fill the end of the file with zeros until the 512th byte.
+magic:
+    .fill 512 - (. - _start), 1, 0

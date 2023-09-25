@@ -1,5 +1,5 @@
 #
-# This program sign the boot sector with the right key
+# This program fill the file with 0x00 until it reach the size of a sector
 #
 
 import sys
@@ -24,11 +24,9 @@ def main():
     with open(boot_file, "rb") as f:
         boot_data = f.read()
 
-    magic_bytes = b'\x55\xAA'
-
-    first_sector = boot_data[:510]
-    first_sector += magic_bytes
-    boot_data = first_sector + boot_data[512:]
+    boot_size = len(boot_data)
+    size_to_fill = 512 - boot_size % 512
+    boot_data += b'\x00' * size_to_fill
 
     with open(boot_file, "wb") as f:
         f.write(boot_data)
