@@ -2,11 +2,13 @@
 # Read the sector to have all the bootcode in memory
 #
 
+#include <iso.h>
+
 read_sector_16:
     pusha
 
     mov $0x02, %ah      # Read function
-    mov $0x02, %al      # Number of sectors to read
+    mov $0x03, %al      # Number of sectors to read
     mov $0x7E00, %bx    # Buffer address
     mov $0x0, %dh       # Head number
     mov $0x80, %dl      # Drive number
