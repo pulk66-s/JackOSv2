@@ -23,6 +23,7 @@ all: os_build
 
 # Including all sub makefiles
 include ./lib/Makefrag
+include ./drivers/Makefrag
 include ./boot/Makefrag
 include ./kernel/Makefrag
 

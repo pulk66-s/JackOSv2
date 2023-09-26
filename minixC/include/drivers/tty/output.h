@@ -1,0 +1,5 @@
+#ifndef __JOS_INC_DRIVERS_TTY_OUTPUT_H__
+#define __JOS_INC_DRIVERS_TTY_OUTPUT_H__
+
+
+#endif

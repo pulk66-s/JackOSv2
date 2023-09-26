@@ -6,3 +6,4 @@ _start = RELOC(entry)
 
 entry:
     call kernel_main
+    ret

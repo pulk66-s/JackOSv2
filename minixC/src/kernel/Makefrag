@@ -28,6 +28,9 @@ KERNEL_C_SOURCES	:=	${KERNEL_FOLDER_NAME}/main.c
 KERNEL_OBJS			:=	${addprefix ${BIN_DIR}/, ${KERNEL_ASM_SOURCES:.S=.S.o}}	\
 						${addprefix ${BIN_DIR}/, ${KERNEL_C_SOURCES:.c=.c.o}}
 
+# Kernel libraries
+KERNEL_LIBS			:=	${VGA_BIN} ${STR_BIN} ${TTY_BIN}
+
 # By default it's building the kernel
 all: build_kernel
 
@@ -36,9 +39,9 @@ build_kernel: ${KERNEL_BIN_NAME}
 	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel done${NC}"
 
 # Building the kernel binary
-${KERNEL_BIN_NAME}: ${KERNEL_OBJS}
+${KERNEL_BIN_NAME}: ${KERNEL_OBJS} ${KERNEL_LIBS}
 	@echo -e "${GREEN} Building ${PROJECT_NAME} kernel ${NC}"
-	${LD} ${LDFLAGS} -T kernel/kernel.ld -o ${BIN_DIR}/${KERNEL_BIN_NAME} ${KERNEL_OBJS} 
+	${LD} ${LDFLAGS} -T kernel/kernel.ld -o ${BIN_DIR}/${KERNEL_BIN_NAME} ${KERNEL_OBJS} ${KERNEL_LIBS}
 # For debugging
 	${OBJCOPY} -O binary ${BIN_DIR}/${KERNEL_BIN_NAME} ${BIN_DIR}/${KERNEL_FOLDER_NAME}/${KERNEL_BIN_NAME}.bin
 	${OBJDUMP} -S ${BIN_DIR}/${KERNEL_BIN_NAME} > ${BIN_DIR}/${KERNEL_FOLDER_NAME}/${KERNEL_BIN_NAME}.asm

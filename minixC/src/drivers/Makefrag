@@ -1,0 +1,59 @@
+##
+## This file compile all the drivers in the drivers directory
+##
+
+# Add the current directory to the build dirs, it's starting from the src/ folder
+DRIVERS_FOLDER_NAME	:=	drivers
+BUILD_DIRS			+= 	${DRIVERS_FOLDER_NAME}		\
+						${DRIVERS_FOLDER_NAME}/vga	\
+						${DRIVERS_FOLDER_NAME}/tty	\
+
+# Drivers Sources
+VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/data.c	\
+						${DRIVERS_FOLDER_NAME}/vga/output.c	\
+						${DRIVERS_FOLDER_NAME}/vga/update.c	\
+
+TTY_SRC				:=	${DRIVERS_FOLDER_NAME}/tty/input.c	\
+						${DRIVERS_FOLDER_NAME}/tty/output.c	\
+						${DRIVERS_FOLDER_NAME}/tty/update.c	\
+						${VGA_SRC}							\
+
+# Drivers Object
+VGA_OBJ				:=	${addprefix ${BIN_DIR}/, ${VGA_SRC:.c=.c.o}}
+TTY_OBJ				:=	${addprefix ${BIN_DIR}/, ${TTY_SRC:.c=.c.o}}
+
+# Drivers Binaries
+VGA_BIN				:=	${BIN_DIR}/${DRIVERS_FOLDER_NAME}/vga.bin
+TTY_BIN				:=	${BIN_DIR}/${DRIVERS_FOLDER_NAME}/tty.bin
+DRIVERS_BIN			:=	drivers.bin
+
+# Create all the drivers
+${DRIVERS_BIN}: ${VGA_BIN} ${TTY_BIN}
+
+# Compile the VGA driver
+${VGA_BIN}: ${VGA_OBJ}
+	@echo -e "${YELLOW} Linking VGA $@ ${NC}"
+	ar rcs $@ $^
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/${VGA_BIN}.asm
+
+# Compile the TTY driver
+${TTY_BIN}: ${TTY_OBJ}
+	@echo -e "${YELLOW} Linking TTY $@ ${NC}"
+	ar rcs $@ $^
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/$@.asm
+
+# Compile the VGA driver
+${BIN_DIR}/${DRIVERS_FOLDER_NAME}/vga/%.c.o: ${DRIVERS_FOLDER_NAME}/vga/%.c
+	@echo -e "${YELLOW} Compiling VGA $< ${NC}"
+	${CC} -c ${CFLAGS} $< -o $@
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/$<.asm
+
+# Compile the TTY driver
+${BIN_DIR}/${DRIVERS_FOLDER_NAME}/tty/%.c.o: ${DRIVERS_FOLDER_NAME}/tty/%.c
+	@echo -e "${YELLOW} Compiling TTY $< ${NC}"
+	${CC} -c ${CFLAGS} $< -o $@
+# For debugging
+	${OBJDUMP} -S $@ > ${BIN_DIR}/$<.asm
