@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "lib/elf/elf.c", "label": "lib/elf/elf.c", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/lib/elf.h", "label": "../include/lib/elf.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/lib/types.h", "label": "../include/lib/types.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/lib/mem.h", "label": "../include/lib/mem.h", "shape": "dot"}, {"color": "#97c2fc", "id": "lib/mem/memcpy.c", "label": "lib/mem/memcpy.c", "shape": "dot"}, {"color": "#97c2fc", "id": "lib/str/itoa.c", "label": "lib/str/itoa.c", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/lib/string.h", "label": "../include/lib/string.h", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/vga/data.c", "label": "drivers/vga/data.c", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/vga.h", "label": "../include/drivers/vga.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/vga/output.h", "label": "../include/drivers/vga/output.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/vga/data.h", "label": "../include/drivers/vga/data.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/vga/update.h", "label": "../include/drivers/vga/update.h", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/vga/output.c", "label": "drivers/vga/output.c", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/vga/update.c", "label": "drivers/vga/update.c", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/tty/input.c", "label": "drivers/tty/input.c", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/tty/output.c", "label": "drivers/tty/output.c", "shape": "dot"}, {"color": "#97c2fc", "id": "drivers/tty/update.c", "label": "drivers/tty/update.c", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/tty.h", "label": "../include/drivers/tty.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/tty/output.h", "label": "../include/drivers/tty/output.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/tty/input.h", "label": "../include/drivers/tty/input.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/tty/update.h", "label": "../include/drivers/tty/update.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/tty/data.h", "label": "../include/drivers/tty/data.h", "shape": "dot"}, {"color": "#97c2fc", "id": "boot/boot16.S", "label": "boot/boot16.S", "shape": "dot"}, {"color": "#97c2fc", "id": "boot/start.c", "label": "boot/start.c", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/boot.h", "label": "../include/boot.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/boot/disk.h", "label": "../include/boot/disk.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/lib.h", "label": "../include/lib.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/drivers/pic.h", "label": "../include/drivers/pic.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/mem.h", "label": "../include/mem.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/mem/gdt.h", "label": "../include/mem/gdt.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/mem/mmu.h", "label": "../include/mem/mmu.h", "shape": "dot"}, {"color": "#97c2fc", "id": "../include/iso.h", "label": "../include/iso.h", "shape": "dot"}, {"color": "#97c2fc", "id": "boot/disk.c", "label": "boot/disk.c", "shape": "dot"}, {"color": "#97c2fc", "id": "kernel/start.S", "label": "kernel/start.S", "shape": "dot"}, {"color": "#97c2fc", "id": "kernel/main.c", "label": "kernel/main.c", "shape": "dot"}]);
+                  edges = new vis.DataSet([{"from": "lib/elf/elf.c", "to": "../include/lib/elf.h"}, {"from": "lib/elf/elf.c", "to": "../include/lib/types.h"}, {"from": "lib/elf/elf.c", "to": "../include/lib/mem.h"}, {"from": "lib/mem/memcpy.c", "to": "../include/lib/mem.h"}, {"from": "lib/mem/memcpy.c", "to": "../include/lib/types.h"}, {"from": "lib/str/itoa.c", "to": "../include/lib/string.h"}, {"from": "lib/str/itoa.c", "to": "../include/lib/types.h"}, {"from": "drivers/vga/data.c", "to": "../include/drivers/vga.h"}, {"from": "drivers/vga/data.c", "to": "../include/drivers/vga/output.h"}, {"from": "drivers/vga/data.c", "to": "../include/lib/types.h"}, {"from": "drivers/vga/data.c", "to": "../include/drivers/vga/data.h"}, {"from": "drivers/vga/data.c", "to": "../include/drivers/vga/update.h"}, {"from": "drivers/vga/output.c", "to": "../include/drivers/vga.h"}, {"from": "drivers/vga/output.c", "to": "../include/drivers/vga/output.h"}, {"from": "drivers/vga/output.c", "to": "../include/lib/types.h"}, {"from": "drivers/vga/output.c", "to": "../include/drivers/vga/data.h"}, {"from": "drivers/vga/output.c", "to": "../include/drivers/vga/update.h"}, {"from": "drivers/vga/output.c", "to": "../include/lib/string.h"}, {"from": "drivers/vga/update.c", "to": "../include/drivers/vga.h"}, {"from": "drivers/vga/update.c", "to": "../include/drivers/vga/output.h"}, {"from": "drivers/vga/update.c", "to": "../include/lib/types.h"}, {"from": "drivers/vga/update.c", "to": "../include/drivers/vga/data.h"}, {"from": "drivers/vga/update.c", "to": "../include/drivers/vga/update.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/tty.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/tty/output.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/tty/input.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/tty/update.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/tty/data.h"}, {"from": "drivers/tty/update.c", "to": "../include/lib/types.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/vga.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/vga/output.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/vga/data.h"}, {"from": "drivers/tty/update.c", "to": "../include/drivers/vga/update.h"}, {"from": "boot/start.c", "to": "../include/boot.h"}, {"from": "boot/start.c", "to": "../include/boot/disk.h"}, {"from": "boot/start.c", "to": "../include/lib.h"}, {"from": "boot/start.c", "to": "../include/lib/types.h"}, {"from": "boot/start.c", "to": "../include/lib/elf.h"}, {"from": "boot/start.c", "to": "../include/lib/mem.h"}, {"from": "boot/start.c", "to": "../include/lib/string.h"}, {"from": "boot/start.c", "to": "../include/drivers/pic.h"}, {"from": "boot/start.c", "to": "../include/mem.h"}, {"from": "boot/start.c", "to": "../include/mem/gdt.h"}, {"from": "boot/start.c", "to": "../include/mem/mmu.h"}, {"from": "boot/start.c", "to": "../include/iso.h"}, {"from": "boot/disk.c", "to": "../include/boot/disk.h"}, {"from": "boot/disk.c", "to": "../include/lib.h"}, {"from": "boot/disk.c", "to": "../include/lib/types.h"}, {"from": "boot/disk.c", "to": "../include/lib/elf.h"}, {"from": "boot/disk.c", "to": "../include/lib/mem.h"}, {"from": "boot/disk.c", "to": "../include/drivers/pic.h"}, {"from": "boot/disk.c", "to": "../include/mem.h"}, {"from": "boot/disk.c", "to": "../include/mem/gdt.h"}, {"from": "boot/disk.c", "to": "../include/mem/mmu.h"}, {"from": "kernel/main.c", "to": "../include/drivers/tty.h"}, {"from": "kernel/main.c", "to": "../include/drivers/tty/output.h"}, {"from": "kernel/main.c", "to": "../include/drivers/tty/input.h"}, {"from": "kernel/main.c", "to": "../include/drivers/tty/update.h"}, {"from": "kernel/main.c", "to": "../include/drivers/tty/data.h"}, {"from": "kernel/main.c", "to": "../include/lib/types.h"}, {"from": "kernel/main.c", "to": "../include/drivers/vga.h"}, {"from": "kernel/main.c", "to": "../include/drivers/vga/output.h"}, {"from": "kernel/main.c", "to": "../include/drivers/vga/data.h"}, {"from": "kernel/main.c", "to": "../include/drivers/vga/update.h"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
