@@ -7,4 +7,6 @@ typedef unsigned int uint32_t;
 typedef unsigned long uint64_t;
 typedef unsigned long size_t;
 
+#define NULL ((void *)0);
+
 #endif

@@ -25,6 +25,5 @@ static void print_string(char *str, int x, int y)
 
 void kernel_main(void)
 {
-    print_string("Kernel", 0, 1);
-    for (;;);
+    print_char('H', 10, 0);
 }

@@ -22,6 +22,7 @@ BINARIES	:=
 all: os_build
 
 # Including all sub makefiles
+include ./lib/Makefrag
 include ./boot/Makefrag
 include ./kernel/Makefrag
 

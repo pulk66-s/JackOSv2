@@ -32,11 +32,4 @@ void read_sector(void *addr, uint32_t lba);
 */
 void wait_disk(void);
 
-/**
- * @brief           Check if a the file at given address is an ELF file or not
- * @param   addr    The address of the file
- * @return          1 if the file is an ELF file, 0 otherwise
-*/
-int is_elf(void *addr);
-
 #endif

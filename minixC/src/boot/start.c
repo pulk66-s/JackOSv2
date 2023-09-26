@@ -1,5 +1,6 @@
 #include <include/boot.h>
-#include <elf.h>
+#include <lib/elf.h>
+#include <lib/string.h>
 #include <drivers/pic.h>
 #include <boot.h>
 #include <mem.h>
@@ -37,20 +38,11 @@ static void print_str(char *str, int x, int y)
  * @param   x   The x position where to print the number
  * @param   y   The y position where to print the number
 */
-static void print_nb(int nb, int x, int y)
+static void print_nb(long long nb, int x, int y)
 {
     char str[32] = {0};
-    size_t size = 0;
 
-    while (nb > 0) {
-        str[size++] = nb % 10 + '0';
-        nb /= 10;
-    }
-    for (int i = 0; i < size / 2; i++) {
-        char tmp = str[i];
-        str[i] = str[size - i - 1];
-        str[size - i - 1] = tmp;
-    }
+    itoa(nb, str);
     print_str(str, x, y);
 }
 
@@ -63,64 +55,80 @@ void read_kernel_first_sector(void *addr)
     read_sector(addr, CHS_TO_LBA(0, 0, KERNEL_BASE_SECTOR));
 }
 
-/**
- * @brief           Read all the kernel sectors to the given address
- * @param   addr    The address where to store the kernel
- * @param   nb      The number of sectors to read
-*/
-void read_kernel(void *addr, size_t nb)
+static void setup_first_kernel_sector(struct elf_header *elfh)
 {
-    for (size_t i = 0; i < nb; i++) {
-        // i + 1, because the first sector is already read
-        read_sector(addr + (i + 1) * SECTOR_SIZE, CHS_TO_LBA(0, 0, KERNEL_BASE_SECTOR + i + 1));
+    struct elf_header relfh = *elfh;
+    print_str("START", 0, 0);
+    read_kernel_first_sector((void *)KERNEL_START);
+
+    if (!is_elf((void *)elfh)) {
+        print_str("NOT GOOD, KERNEL_START is not elf", 0, 1);
+        for (;;);
+    }
+    if (!elf_bit_mode((void *)elfh, 1)) {
+        print_str("NOT GOOD, kernel is not 32 bits", 0, 1);
+        for (;;);
+    }
+    if ((size_t)(&relfh.prgm_header_offset) != (size_t)(&relfh) + 0x1C) {
+        print_str("e_phoff wrong: ", 0, 1);
+        for (;;);
+    }
+    // if (relfh.entry_point != 0xf0100000) {
+    //     print_str("e_entry wrong: ", 0, 1);
+    //     for (;;);
+    // }
+}
+
+/**
+ * @brief           Read an nb of bytes at an offset to a physical addr
+ * @param   pa      The physical addr where to write the bytes
+ * @param   offset  The offset from the start of the elf file
+ * @param   count   Numbers of bytes to write
+ * @return          1 if success, 0 if failure
+*/
+int read_elf_segment(void *pa, size_t offset, size_t count)
+{
+    uint32_t endpa = pa + count;
+
+    endpa &= ~(SECTOR_SIZE - 1);           // Round down to sector boundary.
+    offset = (offset / SECTOR_SIZE) + 1;   // Sector offset in kernel file.
+    while (pa < endpa) {
+        read_sector((void *)pa, offset);
+        pa += SECTOR_SIZE;
+        offset++;
+    }
+    return 1;
+}
+
+static void setup_kernel_programs(struct elf_header *elfh)
+{
+    struct elf_prgm_header *elfph = (struct elf_prgm_header *)((uint8_t *)(elfh) + elfh->prgm_header_offset);
+    struct elf_prgm_header *eelfph = (struct elf_prgm_header *)(elfph + elfh->nb_entries);
+
+    for (int i = 0; elfph < eelfph; elfph++, i++) {
+        print_nb(i, 0, 2 + i);
+        print_nb(elfph->phys_addr, 10, 2 + i);
+        print_nb(elfph->offset, 20, 2 + i);
+        print_nb(elfph->mem_size, 30, 2 + i);
+        if (!read_elf_segment(elfph->phys_addr, elfph->offset, elfph->mem_size)) {
+            print_str("Fail to read elf prgm segment: ", 0, 1);
+        }
     }
 }
 
 void start_boot(void)
 {
-    print_str("START", 0, 0);
-    read_kernel_first_sector((void *)KERNEL_START);
-    if (is_elf((void *)KERNEL_START)) {
-        print_str("KERNEL IS ELF", 0, 1);
-    } else {
-        print_str("KERNEL IS NOT ELF", 0, 1);
-    }
-    if (sizeof(struct elf_header) == 52) {
-        print_str("ELF HEADER SIZE OK", 0, 2);
-    } else {
-        print_str("ELF HEADER SIZE NOT OK", 0, 2);
-    }
-
     struct elf_header *elfh = (struct elf_header *)KERNEL_START;
+    elf_entry_point kstart = NULL;
 
-    if (elfh->bits == 1) {
-        print_str("ELF 32 BITS", 0, 3);
-    } else {
-        print_str("ELF 64 BITS", 0, 3);
-    }
-    if (&(elfh->header_size) == (void *)KERNEL_START + 0x28) {
-        print_str("ELF STRUCT HEADER SIZE IS IN THE GOOD ADDRESS", 0, 4);
-    } else {
-        print_str("ELF STRUCT HEADER SIZE IS NOT IN THE GOOD ADDRESS", 0, 4);
-    }
-    if (elfh->header_size == 52) {
-        print_str("ELF STRUCT HEADER SIZE IS OK", 0, 5);
-    } else {
-        print_str("ELF STRUCT HEADER SIZE IS NOT OK", 0, 5);
-    }
-    
-    size_t file_size = elfh->section_header_offset + (elfh->section_header_tentry_size * elfh->nb_section_headers);
-    size_t nb_sectors_to_read = file_size % SECTOR_SIZE == 0 ? file_size / SECTOR_SIZE - 1 : file_size / SECTOR_SIZE;
+    setup_first_kernel_sector(elfh);
+    size_t elfph_offset = elfh->prgm_header_offset;
+    setup_kernel_programs(elfh);
 
-    read_kernel((void *)KERNEL_START, nb_sectors_to_read);
-
-    if (is_elf((void *)KERNEL_START)) {
-        print_str("KERNEL IS ELF", 0, 6);
-    } else {
-        print_str("KERNEL IS NOT ELF", 0, 6);
-    }
-    print_nb(file_size, 0, 7);
-    print_nb(nb_sectors_to_read, 0, 8);
-    print_str("END", 0, 9);
+    kstart = (elf_entry_point)elfh->entry_point;
+    print_str("Entering the kernel", 0, 8);
+    print_nb(elfh->entry_point, 0, 9);
+    kstart();
+    print_str("End of the bootmain", 0, 10);
     for (;;);
 }

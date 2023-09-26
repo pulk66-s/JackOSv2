@@ -24,17 +24,20 @@ BOOT_C_SRC			:=	${BOOT_FOLDER_NAME}/start.c	\
 # Boot binary
 BOOT_BIN			:=	boot.bin
 
+# Boot Libraries
+BOOT_LIB			:=	${ELF_BIN} ${MEM_BIN} ${STR_BIN}
+
 # Adding binary to the list of binaries to build
 BINARIES			+=	${BOOT_BIN}
 
 # Boot Object
 BOOT_OBJ			:=	$(addprefix ${BIN_DIR}/, ${BOOT_ASM_SRC:.S=.S.o}) \
-						$(addprefix ${BIN_DIR}/, ${BOOT_C_SRC:.c=.c.o})
+						$(addprefix ${BIN_DIR}/, ${BOOT_C_SRC:.c=.c.o})	\
 
 # Building the boot binary
-${BOOT_BIN}: ${BOOT_OBJ}
+${BOOT_BIN}: ${BOOT_OBJ} ${BOOT_LIB}
 	@echo -e "${YELLOW} Linking $@ ${NC}"
-	${LD} ${BOOT_OBJ} ${LDFLAGS} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out
+	${LD} ${BOOT_OBJ} ${BOOT_LIB} ${LDFLAGS} -N -e start -Ttext 0x7C00 -o ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out
 
 # Extracting the binary from the object file
 	${OBJCOPY} -O binary ${BIN_DIR}/${BOOT_FOLDER_NAME}/${BOOT_BIN}.out ${BIN_DIR}/$@

@@ -35,15 +35,3 @@ void wait_disk(void)
 {
     while ((pic_read(PIC_DISK_STATUS) & 0xC0) != PIC_DISK_READY);
 }
-
-/**
- * @brief           Check if a the file at given address is an ELF file or not
- * @param   addr    The address of the file
- * @return          1 if the file is an ELF file, 0 otherwise
-*/
-int is_elf(void *addr)
-{
-    uint8_t *buff = (uint8_t *)addr;
-
-    return buff[0] == 0x7F && buff[1] == 'E' && buff[2] == 'L' && buff[3] == 'F';
-}

@@ -6,5 +6,7 @@
 #define __JL_LIB_H__
 
 #include "lib/types.h"
+#include "lib/elf.h"
+#include "lib/mem.h"
 
 #endif
