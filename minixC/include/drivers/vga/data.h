@@ -28,13 +28,6 @@ enum vga_color {
     VGA_COLOR_WHITE         = 15,
 };
 
-struct vga {
-    uint8_t *buffer;
-    uint8_t color;
-    size_t x;
-    size_t y;
-};
-
-void init_vga(struct vga *vga);
+void init_vga(void);
 
 #endif

@@ -7,6 +7,7 @@ DRIVERS_FOLDER_NAME	:=	drivers
 BUILD_DIRS			+= 	${DRIVERS_FOLDER_NAME}		\
 						${DRIVERS_FOLDER_NAME}/vga	\
 						${DRIVERS_FOLDER_NAME}/tty	\
+						${DRIVERS_FOLDER_NAME}/tty/vga	\
 
 # Drivers Sources
 VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/data.c	\
@@ -16,7 +17,6 @@ VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/data.c	\
 TTY_SRC				:=	${DRIVERS_FOLDER_NAME}/tty/input.c	\
 						${DRIVERS_FOLDER_NAME}/tty/output.c	\
 						${DRIVERS_FOLDER_NAME}/tty/update.c	\
-						${VGA_SRC}							\
 
 # Drivers Object
 VGA_OBJ				:=	${addprefix ${BIN_DIR}/, ${VGA_SRC:.c=.c.o}}

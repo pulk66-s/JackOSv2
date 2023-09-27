@@ -3,6 +3,6 @@
 
 #include <lib/types.h>
 
-void *itoa(long long num, char *str);
+void itoa(uint64_t n, char *s, int b);
 
 #endif

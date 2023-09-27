@@ -3,12 +3,11 @@
 /**
  * @brief       This function clean the screen.
 */
-void vga_clear(struct vga *vga)
+void vga_clear(void)
 {
-    uint8_t *buff = vga->buffer;
+    uint8_t *buffer = (uint8_t *)VGA_BUFFER;
 
-    for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
-        buff[i * 2] = ' ';
-        buff[i * 2 + 1] = 0x00;
+    for (size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT * 2; i++) {
+        buffer[i] = 0;
     }
 }

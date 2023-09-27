@@ -42,7 +42,7 @@ static void print_nb(long long nb, int x, int y)
 {
     char str[32] = {0};
 
-    itoa(nb, str);
+    itoa(nb, str, 10);
     print_str(str, x, y);
 }
 

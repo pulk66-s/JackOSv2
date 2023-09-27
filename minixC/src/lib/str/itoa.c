@@ -1,31 +1,31 @@
 #include <lib/string.h>
 
-void *itoa(long long num, char *str)
+void itoa(uint64_t n, char *s, int b)
 {
-    int i = 0;
-    int neg = 0;
+    size_t i = 0;
+    int isneg = 0;
+    size_t base_mod = 0;
 
-    if (num == 0) {
-        str[i++] = '0';
-        str[i] = '\0';
-        return str;
+    if (n < 0) {
+        isneg = 1;
+        n = -n;
     }
-    if (num < 0) {
-        neg = 1;
-        num = -num;
+    while (n > 0) {
+        base_mod = n % b;
+        if (base_mod > 9) {
+            s[i++] = 'A' + (base_mod - 10);
+        } else {
+            s[i++] = '0' + base_mod;
+        }
+        n /= b;
     }
-    while (num != 0) {
-        int rem = num % 10;
-        str[i++] = rem + '0';
-        num /= 10;
+    if (isneg) {
+        s[i++] = '-';
     }
-    if (neg)
-        str[i++] = '-';
-    str[i] = '\0';
-    for (int j = 0; j < i / 2; j++) {
-        char tmp = str[j];
-        str[j] = str[i - j - 1];
-        str[i - j - 1] = tmp;
+    s[i] = '\0';
+    for (size_t j = 0; j < i / 2; j++) {
+        char tmp = s[j];
+        s[j] = s[i - j - 1];
+        s[i - j - 1] = tmp;
     }
-    return str;
 }

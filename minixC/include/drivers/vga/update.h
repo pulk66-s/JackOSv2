@@ -6,6 +6,6 @@
 /**
  * @brief       This function clean the screen.
 */
-void vga_clear(struct vga *vga);
+void vga_clear(void);
 
 #endif
