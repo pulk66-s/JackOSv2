@@ -16,7 +16,10 @@
  * +-----------------------+ <- 0x????
 */
 
-#define KERNEL_START 0x10000
+#define KERNEL_PHYS_START   0x10000     // This is the kernel physical address, the bootloader will load the kernel at this address
+#define KERNEL_CODE         0xF0000000  // This is the kernel code address, the kernel will be mapped at this address
+
+#define RELOC_KERNEL(x)     ((x) - KERNEL_CODE)
 
 #define SECTOR_SIZE 512 // Minimum size of a memory move between hard drive and memory
 

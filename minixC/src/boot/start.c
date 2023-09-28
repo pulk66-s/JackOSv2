@@ -60,10 +60,10 @@ static void setup_first_kernel_sector(struct elf_header *elfh)
 {
     struct elf_header relfh = *elfh;
     struct elf_prgm_header elfph;
-    read_kernel_first_sector((void *)KERNEL_START);
+    read_kernel_first_sector((void *)KERNEL_PHYS_START);
 
     if (!is_elf((void *)elfh)) {
-        print_str("NOT GOOD, KERNEL_START is not elf", 0, 1);
+        print_str("NOT GOOD, KERNEL_PHYS_START is not elf", 0, 1);
         for (;;);
     }
     if (!elf_bit_mode((void *)elfh, 1)) {
@@ -155,7 +155,7 @@ static void check_read()
 
 void start_boot(void)
 {
-    struct elf_header *elfh = (struct elf_header *)KERNEL_START;
+    struct elf_header *elfh = (struct elf_header *)KERNEL_PHYS_START;
     elf_entry_point kstart = NULL;
 
     setup_first_kernel_sector(elfh);

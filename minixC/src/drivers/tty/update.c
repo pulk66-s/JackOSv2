@@ -1,4 +1,5 @@
 #include <drivers/tty.h>
+#include <mem.h>
 #include <lib/string.h>
 
 /**
@@ -8,33 +9,16 @@
 */
 void init_tty(struct tty *tty, struct tty_print_interface display)
 {
-    tty->display = display;
-    char res[32] = {0};
-    char res2[32] = {0};
-    char res3[32] = {0};
-    itoa((uint64_t)vga_clear, res, 16);
-    for (size_t x = 0; res[x]; x++) {
-        vga_putc(x, 1, 0x0F, res[x]);
-    }
-
-    itoa((uint64_t)(tty->display.clear), res2, 16);
-    for (size_t x = 0; res2[x]; x++) {
-        vga_putc(x, 2, 0x0F, res2[x]);
-    }
-
-    tty->display.clear = tty->display.clear - 0xF0000000;
-
-    itoa((uint64_t)(tty->display.clear), res3, 16);
-    for (size_t x = 0; res3[x]; x++) {
-        vga_putc(x, 3, 0x0F, res3[x]);
-    }
-
-    // vga_clear();
-    tty->display.clear();
-
-    vga_putc(0, 4, 0x0F, 'a');
+    tty->display = (struct tty_print_interface) {
+        .clear          = RELOC_KERNEL(display.clear),
+        .display_char   = RELOC_KERNEL(display.display_char),
+        .display_int    = RELOC_KERNEL(display.display_int),
+        .display_string = RELOC_KERNEL(display.display_string),
+    };
     tty->x = 0;
     tty->y = 0;
+    tty->color = VGA_COLOR(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
+    tty->display.clear();
 }
 
 /**
@@ -45,8 +29,7 @@ void launch_tty(struct tty *tty)
 {
     char prompt[] = "JOS> ";
 
-    tty->display.clear();
-    tty->display.display_string(0, 0, VGA_COLOR(VGA_COLOR_RED, VGA_COLOR_BLUE), prompt);
+    tty->display.display_string(0, 0, tty->color, prompt);
     for (;;) {
         
     }

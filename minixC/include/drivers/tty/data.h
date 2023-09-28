@@ -22,6 +22,7 @@ struct tty_print_interface {
 struct tty {
     struct tty_print_interface display;
     size_t x, y;
+    uint8_t color;
 };
 
 #endif
