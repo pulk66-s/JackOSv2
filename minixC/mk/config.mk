@@ -17,7 +17,7 @@ BIN_DIR				:=	$(RELATIVE_ROOT_PATH)/bin
 
 # The name of the output file
 OUTPUT_NAME 		:= 	$(PROJECT_NAME)
-KERNEL_IMG			:= 	${BIN_DIR}/$(OUTPUT_NAME).img
+KERNEL_IMG			:= 	${BIN_DIR}/$(OUTPUT_NAME).iso
 
 #########################
 ## Makefile log colors ##
@@ -42,8 +42,9 @@ QEMU		:=	qemu-system-i386
 PYTHON		:=	python3
 
 # Flags
-INCLUDES_FLAGS	:=	-I./${RELATIVE_ROOT_PATH} -I./${RELATIVE_ROOT_PATH}/include
-CFLAGS			:=	${INCLUDES_FLAGS} -W -Wall -Wextra -O1 -nostdinc -fno-builtin -fno-stack-protector -MD -fno-omit-frame-pointer -gstabs -m32
-ASFLAGS			:=	${CFLAGS}
-LDFLAGS			:=	-m elf_i386
-QEMU_FLAGS		:=
+INCLUDES_FLAGS		:=	-I./${RELATIVE_ROOT_PATH} -I./${RELATIVE_ROOT_PATH}/include
+CFLAGS				:=	${INCLUDES_FLAGS} -W -Wall -Wextra -nostdinc -fno-builtin -fno-stack-protector -MD -fno-omit-frame-pointer -gstabs -m32
+ASFLAGS				:=	${CFLAGS}
+LDFLAGS				:=	-m elf_i386
+QEMU_DEBUG_FLAGS	:=	-s -S
+QEMU_FLAGS			:=

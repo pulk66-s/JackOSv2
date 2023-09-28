@@ -30,6 +30,13 @@ re: clean all
 # Run the project with default software
 run: run_qemu
 
+# run default debug
+run_debug: run_qemu_debug
+
 # Run the project with qemu
 run_qemu:
 	$(QEMU) $(QEMU_FLAGS) $(KERNEL_IMG)
+
+# Run the project with qemu in debug mode
+run_qemu_debug:
+	$(QEMU) $(QEMU_FLAGS) $(QEMU_DEBUG_FLAGS) $(KERNEL_IMG)

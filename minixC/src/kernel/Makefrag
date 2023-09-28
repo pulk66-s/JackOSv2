@@ -48,8 +48,6 @@ ${KERNEL_BIN_NAME}: ${KERNEL_OBJS} ${KERNEL_LIBS}
 
 # Building the Kernel sources
 ${BIN_DIR}/${KERNEL_FOLDER_NAME}/%.c.o: ${KERNEL_FOLDER_NAME}/%.c
-	echo ${KERNEL_OBJS}
-	echo ${BIN_DIR}/${KERNEL_FOLDER_NAME}/
 	@echo -e "${YELLOW} Compiling $< ${NC}"
 	${CC} -c ${CFLAGS} $< -o $@
 # For debugging

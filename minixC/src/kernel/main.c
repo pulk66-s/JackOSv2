@@ -7,8 +7,8 @@ void kernel_main(void)
     struct tty tty;
     char res[32] = {0};
 
-    // vga_clear();
-    itoa(vga_clear, res, 16);
+    vga_clear();
+    itoa((uint64_t)vga_clear, res, 16);
     for (size_t x = 0; res[x]; x++) {
         vga_putc(x, 0, 0x0F, res[x]);
     }

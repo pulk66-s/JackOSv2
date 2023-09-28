@@ -8,7 +8,7 @@
  * @brief   Thoses typedefs are used to define the tty driver interface.
 */
 typedef void (*display_char)(uint8_t, uint8_t, uint8_t, char);
-typedef void (*display_string)(uint8_t, uint8_t, uint8_t, char*);
+typedef void (*display_string)(uint8_t, uint8_t, uint8_t, const char *);
 typedef void (*display_int)(uint8_t, uint8_t, uint8_t, int);
 typedef void (*clear)(void);
 

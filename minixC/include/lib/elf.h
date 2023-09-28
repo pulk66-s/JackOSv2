@@ -86,10 +86,10 @@ struct elf_prgm_header {
     uint32_t offset;    // Offset of the segment in the elf file
     uint8_t _2[4];      // Unused
     uint32_t phys_addr; // Physical addr of the program
-    uint8_t _3[10];     // Unused
+    uint8_t _3[4];      // Unused
     uint32_t mem_size;  // Size of the segment
-    uint8_t _4[2];      // Unused
-};
+    uint8_t _4[8];      // Unused
+} __attribute__((packed));
 
 typedef void (*elf_entry_point)();
 

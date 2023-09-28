@@ -8,7 +8,7 @@
  * @param   cl  The color.
  * @param   c   The char to print.
 */
-void vga_putc(uint8_t x, uint8_t y, uint8_t cl, uint8_t c)
+void vga_putc(uint8_t x, uint8_t y, uint8_t cl, char c)
 {
     uint8_t *buffer = (uint8_t *)VGA_BUFFER;
     size_t offset = (VGA_WIDTH * y + x) * 2;
