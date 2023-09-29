@@ -40,7 +40,7 @@ ${VGA_BIN}: ${VGA_OBJ}
 # Compile the TTY driver
 ${TTY_BIN}: ${TTY_OBJ}
 	@echo -e "${YELLOW} Linking TTY $@ ${NC}"
-	ar rcs $@ $^
+	ar rcs $@ $^ ${STR_BIN}
 # For debugging
 	${OBJDUMP} -S $@ > ${BIN_DIR}/$@.asm
 

@@ -4,5 +4,6 @@
 #include <lib/types.h>
 
 void itoa(uint64_t n, char *s, int b);
+size_t strlen(const char *str);
 
 #endif

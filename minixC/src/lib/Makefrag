@@ -15,7 +15,8 @@ BUILD_DIRS		+=	${LIB_FOLDER_NAME} 		\
 # Lib Sources
 ELF_SRC			:=	${LIB_FOLDER_NAME}/elf/elf.c
 MEM_SRC			:=	${LIB_FOLDER_NAME}/mem/memcpy.c
-STR_SRC			:=	${LIB_FOLDER_NAME}/str/itoa.c
+STR_SRC			:=	${LIB_FOLDER_NAME}/str/itoa.c	\
+					${LIB_FOLDER_NAME}/str/strlen.c
 
 # Lib Object
 ELF_OBJ			:=	${addprefix ${BIN_DIR}/, ${ELF_SRC:.c=.c.o}}
@@ -25,7 +26,7 @@ STR_OBJ			:=	${addprefix ${BIN_DIR}/, ${STR_SRC:.c=.c.o}}
 # binaries
 ELF_BIN			:=	${BIN_DIR}/${LIB_FOLDER_NAME}/elf.bin
 MEM_BIN			:=	${BIN_DIR}/${LIB_FOLDER_NAME}/mem.bin
-STR_BIN			:=	${BIN_DIR}/${LIB_FOLDER_NAME}/str.bin
+STR_BIN			:=	${STR_OBJ}
 JOS_LIB			:=	libjos.a
 
 # Create all the libs
@@ -44,10 +45,12 @@ ${MEM_BIN}: ${MEM_OBJ}
 	cp ${MEM_OBJ} ${MEM_BIN}
 
 # Create the MEM lib
-${STR_BIN}: ${STR_OBJ}
-	@echo -e "${YELLOW} Linking LIB $@ ${NC}"
-#	${CC} ${CFLAGS} -c $< -o $@
-	cp ${STR_OBJ} ${STR_BIN}
+# ${STR_BIN}: ${STR_OBJ}
+# 	@echo -e "${YELLOW} Linking LIB $@ ${NC}"
+# #	${CC} ${CFLAGS} -c $< -o $@
+# 	ar rsc ${STR_BIN} ${STR_OBJ}
+
+# 	${OBJDUMP} -S $@ > ${BIN_DIR}/${LIB_FOLDER_NAME}/str.asm
 
 ${BIN_DIR}/${LIB_FOLDER_NAME}/%.c.o: ${LIB_FOLDER_NAME}/%.c
 	@echo -e "${YELLOW} Compiling LIB $< ${NC}"

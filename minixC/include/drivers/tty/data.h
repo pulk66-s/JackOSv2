@@ -4,6 +4,8 @@
 #include <lib/types.h>
 #include <drivers/vga.h>
 
+#define TTY_MAX_PROMPT_SIZE 8
+
 /**
  * @brief   Thoses typedefs are used to define the tty driver interface.
 */
@@ -23,6 +25,7 @@ struct tty {
     struct tty_print_interface display;
     size_t x, y;
     uint8_t color;
+    char prompt[TTY_MAX_PROMPT_SIZE];
 };
 
 #endif

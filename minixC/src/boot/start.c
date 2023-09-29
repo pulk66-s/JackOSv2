@@ -151,6 +151,9 @@ static void check_read()
     print_str(buff1, 2, 2);
     print_str("0x", 6, 2);
     print_str(buff2, 8, 2);
+    if (first_byte != 0xE8 && second_byte != 0x01) {
+        for (;;);
+    }
 }
 
 void start_boot(void)
@@ -163,11 +166,7 @@ void start_boot(void)
     setup_kernel_programs(elfh);
 
     kstart = (elf_entry_point)elfh->entry_point;
-    // char buff[16] = {0};
-    // itoa(elfh->entry_point, buff, 16);
-    // print_str("0x", 0, 9);
-    // print_str(buff, 2, 9);
-    // check_read();
+    check_read();
     kstart();
     for (;;);
 }

@@ -19,6 +19,11 @@ void init_tty(struct tty *tty, struct tty_print_interface display)
     tty->y = 0;
     tty->color = VGA_COLOR(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
     tty->display.clear();
+    for (size_t i = 0; i < TTY_MAX_PROMPT_SIZE; tty->prompt[i++] = '\0');
+    tty->prompt[0] = '$';
+    tty->prompt[1] = '>';
+    tty->prompt[2] = ' ';
+    tty->prompt[3] = '\0';
 }
 
 /**
@@ -27,9 +32,7 @@ void init_tty(struct tty *tty, struct tty_print_interface display)
 */
 void launch_tty(struct tty *tty)
 {
-    char prompt[] = "JOS> ";
-
-    tty->display.display_string(0, 0, tty->color, prompt);
+    tty_putstr(tty, tty->prompt);
     for (;;) {
         
     }
