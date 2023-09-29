@@ -165,8 +165,9 @@ void start_boot(void)
     size_t elfph_offset = elfh->prgm_header_offset;
     setup_kernel_programs(elfh);
 
-    kstart = (elf_entry_point)elfh->entry_point;
+    kstart = (elf_entry_point)(elfh->entry_point - 0x10000000);
     check_read();
+    // for (;;);
     kstart();
     for (;;);
 }
