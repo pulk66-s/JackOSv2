@@ -12,17 +12,20 @@ include ../mk/config.mk
 
 # Add the current directory to the build dirs, it's starting from the src/ folder
 KERNEL_FOLDER_NAME	:=	kernel
-BUILD_DIRS			+=	${KERNEL_FOLDER_NAME}
+BUILD_DIRS			+=	${KERNEL_FOLDER_NAME}				\
+						${KERNEL_FOLDER_NAME}/interrupts	\
 
 # Add the kernel ELF binary to the binaries to build
 KERNEL_BIN_NAME		:=	kernel.elf
 BINARIES			+=	${KERNEL_BIN_NAME}
 
 # Kernel ASM Sources
-KERNEL_ASM_SOURCES	:=	${KERNEL_FOLDER_NAME}/start.S
+KERNEL_ASM_SOURCES	:=	${KERNEL_FOLDER_NAME}/start.S			\
+						${KERNEL_FOLDER_NAME}/interrupts/isr.S	\
 
 # Kernel C Sources
-KERNEL_C_SOURCES	:=	${KERNEL_FOLDER_NAME}/main.c
+KERNEL_C_SOURCES	:=	${KERNEL_FOLDER_NAME}/main.c					\
+						${KERNEL_FOLDER_NAME}/interrupts/interrupts.c	\
 
 # Kernel Objects
 KERNEL_OBJS			:=	${addprefix ${BIN_DIR}/, ${KERNEL_ASM_SOURCES:.S=.S.o}}	\
