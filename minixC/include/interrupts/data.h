@@ -3,7 +3,8 @@
 
 #include <lib/types.h>
 
-#define IDT_ENTRIES 32
+#define IDT_ENTRIES 48
+#define MAX_CALLBAC_PER_ENTRY 10
 
 /**
  * @brief       The interrupt descriptor table entry
