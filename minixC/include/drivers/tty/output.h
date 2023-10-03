@@ -25,10 +25,10 @@ void tty_putstr(struct tty *tty, const char *str);
 void tty_putnb(struct tty *tty, int nb);
 
 /**
- * @brief       Output a newline on the screen with the tty
- * @param   tty The tty to use
- * @param   nb  The number to output
+ * @brief           Output a newline on the screen with the tty
+ * @param   tty     The tty to use
+ * @param   prompt  1 if the prompt should be displayed, 0 otherwise
 */
-void tty_newline(struct tty *tty);
+void tty_newline(struct tty *tty, int prompt);
 
 #endif

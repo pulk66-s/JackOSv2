@@ -10,15 +10,27 @@
 void tty_readline(struct tty *tty, char *buff)
 {
     size_t save_x = tty->x, save_y = tty->y;
-    char c = keyboard_read();
+    char c = 0;
     size_t prompt_len = strlen(tty->prompt);
 
-    if (c == '\n') {
-        for (size_t i = prompt_len; i < tty->x; i++) {
-            buff[i - prompt_len] = vga_get_char(i, tty->y);
+    while (1) {
+        c = keyboard_read();
+        switch (c) {
+        case '\b':
+            if (tty->x > prompt_len) {
+                tty->x--;
+                tty->display.display_char(tty->x, tty->y, tty->color, ' ');
+            }
+            break;
+        case '\n':
+            for (size_t i = prompt_len; i < tty->x; i++) {
+                buff[i - prompt_len] = tty->display.get_char(i, tty->y);
+            }
+            tty_newline(tty, 0);
+            return;
+        default:
+            tty_putc(tty, c);
+            break;
         }
-        tty_newline(tty);
-    } else {
-        tty_putc(tty, c);
     }
 }

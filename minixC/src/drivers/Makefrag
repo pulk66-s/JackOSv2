@@ -18,6 +18,7 @@ VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/output.c	\
 TTY_SRC				:=	${DRIVERS_FOLDER_NAME}/tty/input.c	\
 						${DRIVERS_FOLDER_NAME}/tty/output.c	\
 						${DRIVERS_FOLDER_NAME}/tty/update.c	\
+						${DRIVERS_FOLDER_NAME}/tty/cmd.c	\
 
 PS2_KEYBOARD_SRC	:=	${DRIVERS_FOLDER_NAME}/ps2/keyboard/init.c		\
 						${DRIVERS_FOLDER_NAME}/ps2/keyboard/scancode.c	\

@@ -4,7 +4,7 @@
 #include <lib/types.h>
 
 // Flag that define if the shift key is pressed or not
-#define SHIFT_FLAG              1 << 7
+#define RELEASE_FLAG              (1 << 7)
 
 // Maximum number of keys in the buffer
 #define MAX_KEYS_BUFFER         20

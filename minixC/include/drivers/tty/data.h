@@ -2,7 +2,6 @@
 #define __JOS_INC_DRIVERS_TTY_DATA_H__
 
 #include <lib/types.h>
-#include <drivers/vga.h>
 
 #define TTY_MAX_PROMPT_SIZE 8       // Max size of the prompt
 #define TTY_MAX_LINE_SIZE   128     // Max size of a line
@@ -17,7 +16,7 @@
 typedef void (*display_char)(uint8_t, uint8_t, uint8_t, char);
 typedef void (*display_string)(uint8_t, uint8_t, uint8_t, const char *);
 typedef void (*display_int)(uint8_t, uint8_t, uint8_t, int);
-typedef void (*get_char)(uint8_t, uint8_t);
+typedef char (*get_char)(uint8_t, uint8_t);
 typedef void (*clear)(void);
 
 struct tty_print_interface {

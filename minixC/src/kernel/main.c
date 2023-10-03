@@ -17,6 +17,7 @@ void kernel_main(void)
         .display_char   = vga_putc,
         .display_int    = vga_printn,
         .display_string = vga_print,
+        .get_char       = vga_get_char,
     });
     idt_setup();
     init_ps2_keyboard();

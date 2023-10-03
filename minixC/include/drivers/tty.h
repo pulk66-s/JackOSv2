@@ -5,5 +5,6 @@
 #include "tty/input.h"
 #include "tty/update.h"
 #include "tty/data.h"
+#include "tty/cmd.h"
 
 #endif

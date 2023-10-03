@@ -12,7 +12,7 @@ void init_tty(struct tty *tty, struct tty_print_interface display)
     tty->display = display;
     tty->x = 0;
     tty->y = 0;
-    tty->color = VGA_COLOR(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
+    tty->color = 0x0F;
     for (size_t i = 0; i < TTY_MAX_PROMPT_SIZE; tty->prompt[i++] = '\0');
     tty->prompt[0] = '$';
     tty->prompt[1] = '>';
@@ -33,5 +33,7 @@ void launch_tty(struct tty *tty)
         char buff[TTY_MAX_BUFF_SIZE] = {0};
 
         tty_readline(tty, buff);
+        tty_launch_command(tty, buff);
+        tty_newline(tty, 1);
     }
 }
