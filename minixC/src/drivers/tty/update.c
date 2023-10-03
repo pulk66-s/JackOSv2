@@ -18,6 +18,7 @@ void init_tty(struct tty *tty, struct tty_print_interface display)
     tty->prompt[1] = '>';
     tty->prompt[2] = ' ';
     tty->prompt[3] = '\0';
+    for (size_t i = 0; i < TTY_MAX_BUFF_SIZE; tty->buff[i++] = '\0');
 }
 
 /**
@@ -29,6 +30,8 @@ void launch_tty(struct tty *tty)
     tty->display.clear();
     tty_putstr(tty, tty->prompt);
     for (;;) {
-        
+        char buff[TTY_MAX_BUFF_SIZE] = {0};
+
+        tty_readline(tty, buff);
     }
 }

@@ -4,31 +4,40 @@
 
 # Add the current directory to the build dirs, it's starting from the src/ folder
 DRIVERS_FOLDER_NAME	:=	drivers
-BUILD_DIRS			+= 	${DRIVERS_FOLDER_NAME}		\
-						${DRIVERS_FOLDER_NAME}/vga	\
-						${DRIVERS_FOLDER_NAME}/tty	\
-						${DRIVERS_FOLDER_NAME}/tty/vga	\
+BUILD_DIRS			+= 	${DRIVERS_FOLDER_NAME}				\
+						${DRIVERS_FOLDER_NAME}/vga			\
+						${DRIVERS_FOLDER_NAME}/tty			\
+						${DRIVERS_FOLDER_NAME}/tty/vga		\
+						${DRIVERS_FOLDER_NAME}/ps2			\
+						${DRIVERS_FOLDER_NAME}/ps2/keyboard	\
 
 # Drivers Sources
-VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/data.c	\
-						${DRIVERS_FOLDER_NAME}/vga/output.c	\
+VGA_SRC				:=	${DRIVERS_FOLDER_NAME}/vga/output.c	\
 						${DRIVERS_FOLDER_NAME}/vga/update.c	\
 
 TTY_SRC				:=	${DRIVERS_FOLDER_NAME}/tty/input.c	\
 						${DRIVERS_FOLDER_NAME}/tty/output.c	\
 						${DRIVERS_FOLDER_NAME}/tty/update.c	\
 
+PS2_KEYBOARD_SRC	:=	${DRIVERS_FOLDER_NAME}/ps2/keyboard/init.c		\
+						${DRIVERS_FOLDER_NAME}/ps2/keyboard/scancode.c	\
+						${DRIVERS_FOLDER_NAME}/ps2/keyboard/data.c		\
+
 # Drivers Object
 VGA_OBJ				:=	${addprefix ${BIN_DIR}/, ${VGA_SRC:.c=.c.o}}
 TTY_OBJ				:=	${addprefix ${BIN_DIR}/, ${TTY_SRC:.c=.c.o}}
+PS2_KEYBOARD_OBJ	:=	${addprefix ${BIN_DIR}/, ${PS2_KEYBOARD_SRC:.c=.c.o}}
 
 # Drivers Binaries
 VGA_BIN				:=	${BIN_DIR}/${DRIVERS_FOLDER_NAME}/vga.bin
 TTY_BIN				:=	${BIN_DIR}/${DRIVERS_FOLDER_NAME}/tty.bin
+PS2_KEYBOARD_BIN	:=	${BIN_DIR}/${DRIVERS_FOLDER_NAME}/ps2/keyboard.bin
 DRIVERS_BIN			:=	drivers.bin
 
 # Create all the drivers
-${DRIVERS_BIN}: ${VGA_BIN} ${TTY_BIN}
+${DRIVERS_BIN}: ${VGA_BIN} ${TTY_BIN} ${PS2_KEYBOARD_BIN}
+	@echo -e "${YELLOW} Linking Drivers $@ ${NC}"
+	ar rcs $@ $^
 
 # Compile the VGA driver
 ${VGA_BIN}: ${VGA_OBJ}
@@ -44,6 +53,11 @@ ${TTY_BIN}: ${TTY_OBJ}
 # For debugging
 	${OBJDUMP} -S $@ > ${BIN_DIR}/$@.asm
 
+# Compile the PS2 Keyboard driver
+${PS2_KEYBOARD_BIN}: ${PS2_KEYBOARD_OBJ}
+	@echo -e "${YELLOW} Linking PS2 Keyboard $@ ${NC}"
+	ar rcs $@ $^
+
 # Compile the VGA driver
 ${BIN_DIR}/${DRIVERS_FOLDER_NAME}/vga/%.c.o: ${DRIVERS_FOLDER_NAME}/vga/%.c
 	@echo -e "${YELLOW} Compiling VGA $< ${NC}"
@@ -57,3 +71,8 @@ ${BIN_DIR}/${DRIVERS_FOLDER_NAME}/tty/%.c.o: ${DRIVERS_FOLDER_NAME}/tty/%.c
 	${CC} -c ${CFLAGS} $< -o $@
 # For debugging
 	${OBJDUMP} -S $@ > ${BIN_DIR}/$<.asm
+
+# Compile the PS2 Keyboard driver
+${BIN_DIR}/${DRIVERS_FOLDER_NAME}/ps2/keyboard/%.c.o: ${DRIVERS_FOLDER_NAME}/ps2/keyboard/%.c
+	@echo -e "${YELLOW} Compiling PS2 Keyboard $< ${NC}"
+	${CC} -c ${CFLAGS} $< -o $@

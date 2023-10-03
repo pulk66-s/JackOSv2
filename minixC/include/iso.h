@@ -7,12 +7,17 @@
 #define __JL_ISO_H__
 
 /**
- * The address (0, 0, 0) is not used because it is the MBR (Master Boot Record)
- * +-------------+ <- (C, H, S) = (0, 0, 1)
- * | BOOT Loader |
- * +-------------+ <- (C, H, S) = (0, 0, 8)
- * | Kernel Code |
- * +-------------+
+ * +---------------+ <- (C, H, S) = (0, 0, 0)
+ * | BOOT Loader   |
+ * +---------------+ <- (C, H, S) = (0, 0, 7)
+ * | Kernel Header |
+ * +---------------+ <- (C, H, S) = (0, 0, 15)
+ * | Kernel Seg  1 |
+ * +---------------+ <- (C, H, S) = (0, 0, 50)
+ * | ............. |
+ * +---------------+ <- (C, H, S) = (0, 0, 55)
+ * | Kernel Seg  2 |
+ * +---------------+ <- (C, H, S) = (0, 0, 60)
  * 
  *****************************************************
  * Here is the repartition of the kernel code in the ISO

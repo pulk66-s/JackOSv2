@@ -32,7 +32,7 @@ KERNEL_OBJS			:=	${addprefix ${BIN_DIR}/, ${KERNEL_ASM_SOURCES:.S=.S.o}}	\
 						${addprefix ${BIN_DIR}/, ${KERNEL_C_SOURCES:.c=.c.o}}
 
 # Kernel libraries
-KERNEL_LIBS			:=	${VGA_BIN} ${STR_BIN} ${TTY_BIN}
+KERNEL_LIBS			:=	${VGA_BIN} ${STR_BIN} ${TTY_BIN} ${PS2_KEYBOARD_BIN}
 
 # By default it's building the kernel
 all: build_kernel

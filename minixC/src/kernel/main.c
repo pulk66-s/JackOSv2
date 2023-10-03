@@ -1,6 +1,7 @@
 #include <drivers/tty.h>
 #include <drivers/vga.h>
 #include <drivers/pic.h>
+#include <drivers/ps2/keyboard.h>
 #include <lib/string.h>
 #include <interrupts.h>
 
@@ -18,6 +19,7 @@ void kernel_main(void)
         .display_string = vga_print,
     });
     idt_setup();
+    init_ps2_keyboard();
     launch_tty(&tty);
     for (;;);
 }

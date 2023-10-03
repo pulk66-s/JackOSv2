@@ -89,6 +89,8 @@ static void setup_first_kernel_sector(struct elf_header *elfh)
     // }
 }
 
+static y = 3;
+
 /**
  * @brief           Read an nb of bytes at an offset to a physical addr
  * @param   pa      The physical addr where to write the bytes
@@ -101,21 +103,37 @@ int read_elf_segment(void *pa, size_t offset, size_t count)
     size_t nb_sectors = ROUNDUP(count, SECTOR_SIZE) / SECTOR_SIZE;
     int i = 0;
     char buff[16] = {0};
+    void *l = pa;
 
+    buff[0] = 0;
+    itoa(offset, buff, 16);
+    print_str(buff, 26, 2 + y);
     offset = KERNEL_BASE_SECTOR + (offset / SECTOR_SIZE) - 1;   // Sector offset in kernel file.
-    print_str("reading offset:", 15, 2);
-    print_nb(offset, 30, 2);
-    print_str("nb_sectors:", 20, 3);
-    print_nb(nb_sectors, 33, 3);
+    print_str("reading offset:", 10, 2 + y);
+    print_nb(offset, 31, 2 + y);
+    print_str("nb_sectors:", 35, 2 + y);
+    print_nb(nb_sectors, 48, 2 + y);
     for (size_t i = 0; i < nb_sectors; i++, offset++) {
-        itoa((size_t)pa, buff, 16);
-        print_str("Read sector: ", 0, i + 5);
-        print_nb(offset, 13, i + 5);
-        print_str("at: 0x", 17, i + 5);
-        print_str(buff, 24, i + 5);
-        read_sector((void *)pa, offset);
+        read_sector(pa, offset);
         pa += SECTOR_SIZE;
     }
+    buff[0] = 0;
+    itoa(*(uint8_t *)l, buff, 16);
+    if (*(uint8_t *)l == 0) {
+        print_str("0", 0, 2 + y);
+    }
+    print_str(buff, 0, 2 + y);
+    buff[0] = 0;
+    itoa(*((uint8_t *)l + 1), buff, 16);
+    if (*((uint8_t *)l + 1) == 0) {
+        print_str("0", 5, 2 + y);
+    }
+    print_str(buff, 5, 2 + y);
+    print_str("VA: ", 52, 2 + y);
+    buff[0] = 0;
+    itoa((size_t)l, buff, 16);
+    print_str(buff, 56, 2 + y);
+    y++;
     return 1;
 }
 
@@ -166,7 +184,7 @@ void start_boot(void)
     setup_kernel_programs(elfh);
 
     kstart = (elf_entry_point)(elfh->entry_point - 0x10000000);
-    check_read();
+    // check_read();
     // for (;;);
     kstart();
     for (;;);

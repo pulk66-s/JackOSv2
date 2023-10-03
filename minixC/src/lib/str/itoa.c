@@ -9,6 +9,10 @@ void itoa(uint64_t n, char *s, int b)
     if (n < 0) {
         isneg = 1;
         n = -n;
+    } else if (n == 0) {
+        s[0] = '0';
+        s[1] = 0;
+        return;
     }
     while (n > 0) {
         base_mod = n % b;

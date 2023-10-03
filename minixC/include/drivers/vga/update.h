@@ -8,4 +8,12 @@
 */
 void vga_clear(void);
 
+/**
+ * @brief       Get a character at the given position.
+ * @param   x   The x position
+ * @param   y   The y position
+ * @return      The character at the given position.
+*/
+char vga_get_char(uint8_t x, uint8_t y);
+
 #endif

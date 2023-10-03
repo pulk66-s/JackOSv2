@@ -35,3 +35,15 @@ void tty_putnb(struct tty *tty, int nb)
     itoa(nb, str, 10);
     tty_putstr(tty, str);
 }
+
+/**
+ * @brief       Output a newline on the screen with the tty
+ * @param   tty The tty to use
+ * @param   nb  The number to output
+*/
+void tty_newline(struct tty *tty)
+{
+    tty->x = 0;
+    tty->y++;
+    tty_putstr(tty, tty->prompt);
+}

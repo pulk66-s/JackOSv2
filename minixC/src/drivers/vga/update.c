@@ -11,3 +11,16 @@ void vga_clear(void)
         buffer[i] = 0;
     }
 }
+
+/**
+ * @brief       Get a character at the given position.
+ * @param   x   The x position
+ * @param   y   The y position
+ * @return      The character at the given position.
+*/
+char vga_get_char(uint8_t x, uint8_t y)
+{
+    uint8_t *buffer = (uint8_t *)VGA_BUFFER;
+
+    return buffer[(y * VGA_WIDTH + x) * 2];
+}
