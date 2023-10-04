@@ -9,5 +9,6 @@
 
 #include "mem/gdt.h"
 #include "mem/mmu.h"
+#include "mem/kernel.h"
 
 #endif

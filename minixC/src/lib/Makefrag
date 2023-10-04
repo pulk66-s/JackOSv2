@@ -14,7 +14,8 @@ BUILD_DIRS		+=	${LIB_FOLDER_NAME} 		\
 
 # Lib Sources
 ELF_SRC			:=	${LIB_FOLDER_NAME}/elf/elf.c
-MEM_SRC			:=	${LIB_FOLDER_NAME}/mem/memcpy.c
+MEM_SRC			:=	${LIB_FOLDER_NAME}/mem/memcpy.c	\
+					${LIB_FOLDER_NAME}/mem/memset.c
 STR_SRC			:=	${LIB_FOLDER_NAME}/str/itoa.c	\
 					${LIB_FOLDER_NAME}/str/strlen.c	\
 					${LIB_FOLDER_NAME}/str/strcmp.c
@@ -43,7 +44,7 @@ ${ELF_BIN}: ${ELF_OBJ}
 ${MEM_BIN}: ${MEM_OBJ}
 	@echo -e "${YELLOW} Linking LIB $@ ${NC}"
 #	${CC} ${CFLAGS} -c $< -o $@
-	cp ${MEM_OBJ} ${MEM_BIN}
+	ar rsc ${MEM_BIN} ${MEM_OBJ}
 
 # Create the MEM lib
 # ${STR_BIN}: ${STR_OBJ}

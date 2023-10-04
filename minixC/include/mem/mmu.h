@@ -19,9 +19,11 @@
 #define KERNEL_PHYS_START   0x10000     // This is the kernel physical address, the bootloader will load the kernel at this address
 #define KERNEL_CODE         0xF0000000  // This is the kernel code address, the kernel will be mapped at this address
 
-
-
 #define SECTOR_SIZE 512 // Minimum size of a memory move between hard drive and memory
+
+// This is the default number of pages that can be used before the kernel has setup 
+// the memory management system
+#define KMEM_DEFAULT_NB_PAGES   1
 
 /**
  * Convert the CHS address to a LBA address, the CHS address is the address of a sector on the hard drive

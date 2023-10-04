@@ -12,4 +12,12 @@
 */
 void *memcpy(void *dest, const void *src, size_t n);
 
+/**
+ * @brief       This function set n bytes of memory to a value.
+ * @param dest  The destination.
+ * @param val   The value.
+ * @param n     The number of bytes to set.
+*/
+void memset(void *dest, int val, size_t n);
+
 #endif
