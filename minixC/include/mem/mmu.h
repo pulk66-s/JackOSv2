@@ -6,7 +6,7 @@
 #define __CL_MEM_MMU_H__
 
 /**
- * Actual memory map
+ * Actual memory map for physical memory
  * +-----------------------+ <- 0x00
  * |       BootLoader      | BootLoader stuff
  * +-----------------------+ <- 0x7e00

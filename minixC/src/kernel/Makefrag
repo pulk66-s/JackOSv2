@@ -14,6 +14,7 @@ include ../mk/config.mk
 KERNEL_FOLDER_NAME	:=	kernel
 BUILD_DIRS			+=	${KERNEL_FOLDER_NAME}				\
 						${KERNEL_FOLDER_NAME}/interrupts	\
+						${KERNEL_FOLDER_NAME}/mem			\
 
 # Add the kernel ELF binary to the binaries to build
 KERNEL_BIN_NAME		:=	kernel.elf
@@ -26,7 +27,6 @@ KERNEL_ASM_SOURCES	:=	${KERNEL_FOLDER_NAME}/start.S			\
 # Kernel C Sources
 KERNEL_C_SOURCES	:=	${KERNEL_FOLDER_NAME}/main.c					\
 						${KERNEL_FOLDER_NAME}/interrupts/interrupts.c	\
-						${KERNEL_FOLDER_NAME}/mem.c						\
 
 # Kernel Objects
 KERNEL_OBJS			:=	${addprefix ${BIN_DIR}/, ${KERNEL_ASM_SOURCES:.S=.S.o}}	\
