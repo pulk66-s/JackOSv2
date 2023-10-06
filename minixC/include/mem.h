@@ -10,7 +10,6 @@
 #include "mem/gdt.h"
 #include "mem/mmu.h"
 #include "mem/kernel.h"
-#include "mem/paging.h"
 #include "mem/physical.h"
 
 #endif
