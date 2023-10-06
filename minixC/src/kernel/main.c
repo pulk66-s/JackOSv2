@@ -21,7 +21,6 @@ void kernel_main(void)
 {
     struct tty tty;
     extern char edata[], end[];
-    char buff[16] = {0};
 
     end_kernel_reading();
 
@@ -37,8 +36,7 @@ void kernel_main(void)
 
     idt_setup();
     init_ps2_keyboard();
-
+    init_physical_memory(PHYS_MEM_START, PHYS_MEM_SIZE);
     launch_tty(&tty);
     for (;;);
 }
-  

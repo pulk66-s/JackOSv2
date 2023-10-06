@@ -5,6 +5,12 @@
 #ifndef __CL_MEM_MMU_H__
 #define __CL_MEM_MMU_H__
 
+#include <lib/types.h>
+
+// Define type to know what type of address we are using
+typedef uint32_t phys_addr;
+typedef uint32_t virt_addr;
+
 /**
  * Actual memory map for physical memory
  * +-----------------------+ <- 0x00
@@ -13,11 +19,29 @@
  * |                       | Empty space for stack
  * +-----------------------+ <- 0x10000
  * |         Kernel        | Kernel code
- * +-----------------------+ <- 0x????
+ * +-----------------------+ <- 0x1C800
+ * | Physical memory mngmt | Physical memory manager
+ * +-----------------------+ <- 0x1CC00
 */
 
 #define KERNEL_PHYS_START   0x10000     // This is the kernel physical address, the bootloader will load the kernel at this address
-#define KERNEL_CODE         0xF0000000  // This is the kernel code address, the kernel will be mapped at this address
+
+// This is the size allowed of the kernel code, 100 sectors of 512 bytes
+#define KERNEL_SIZE         0xC800
+
+// This is the end of the kernel code, the bootloader will load the kernel at this address
+#define KERNEL_PHYS_END     (KERNEL_PHYS_START + KERNEL_SIZE)
+
+// This is the start of the physical memory for the physical memory manager
+// the bootloader use the first 1MB of the memory
+#define PHYS_MEM_START      KERNEL_PHYS_END
+
+// The size of the physical memory for the physical memory manager
+// 0x1000 = 4KB of physical memory
+#define PHYS_MEM_SIZE       0x1000
+
+// End of the physical memory for the physical memory manager
+#define PHYS_MEM_END        (PHYS_MEM_START + PHYS_MEM_SIZE)
 
 #define SECTOR_SIZE 512 // Minimum size of a memory move between hard drive and memory
 

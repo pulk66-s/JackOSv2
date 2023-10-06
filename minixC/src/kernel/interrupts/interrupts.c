@@ -92,13 +92,10 @@ void idt_setup()
 */
 extern void isr_handler(struct registers *regs)
 {
-    for (int i = 0; i < 20; i++) {
-        vga_printn(0, i, 0x0F, i);
-    }
-    if (regs->interrupt > 20) {
-        vga_print(0, 0, 0x0F, "y");
-    } else {
-        vga_print(10, regs->interrupt, 0x0F, "x");
+    for (size_t i = 0; i < MAX_CALLBAC_PER_ENTRY; i++) {
+        if (callback[regs->interrupt][i] != 0) {
+            callback[regs->interrupt][i](regs);
+        }
     }
 }
 
